@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <header>
+        <h1>Traductor de lengua indígena Arawak</h1>
+        <p>La lengua Arawak, hablada por comunidades indígenas en diversas regiones de América Latina, como los Wayuu en La Guajira, es una de las lenguas más antiguas y extensas del continente.</p>
+    </header>
+    <main>
+        <form action="{{ url_for('translate') }}" method="post">
+            <div class="text_group">
+                <textarea id="text" name="text" rows="4" cols="50" placeholder="Escribe o pega el texto aquí." autofocus
+                    required></textarea>
+            </div>
+            <div class="select_language">
+                <label for="language">Selecciona el idioma:</label>
+                <select name="" id="">
+                    <option value="es" selected>Español</option>
+                    <option value="en">Inglés</option>
+                    <option value="pt">Portugués</option>
+                    <option value="fr">Francés</option>
+                    <option value="jp">Japanese</option>
+                </select>
+            </div>
+            <div class="button">
+                <button type="submit">Traducir</button>
+            </div>
+        </form>
+
+        {% if translation %}
+        <h2>Traducción:</h2>
+        <p>{{ translation }}</p>
+        {% endif %}
+    </main>
+</body>
+
+</html>

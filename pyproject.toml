@@ -1,0 +1,11 @@
+[project]
+name = "taller1"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.1.0",
+    "ollama>=0.4.7",
+    "pylint>=3.3.6",
+]
