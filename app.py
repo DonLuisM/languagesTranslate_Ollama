@@ -1,7 +1,7 @@
 ''' 
 Adecuación del modelo Ollama para Flask
 '''
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 import ollama
 
 app = Flask(__name__)
@@ -19,7 +19,8 @@ def translate():
     Función para obtener la respuesta del modelo Ollama
     '''
     model = 'llama3.2'
-    prompt = '¿Cómo estás?'
+    prompt = request.form['text']
+    language = request.form['languages']
 
     try:
         response = ollama.chat(
@@ -31,7 +32,7 @@ def translate():
                 }
             ]
         )
-        return jsonify(response['message']['content'])
+        return jsonify(response['message']['content'], language)
     except TypeError as e:
         return jsonify({'error': str(e)}), 500
 

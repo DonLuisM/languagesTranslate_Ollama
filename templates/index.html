@@ -11,7 +11,8 @@
 <body>
     <header>
         <h1>Traductor de lengua indígena Arawak</h1>
-        <p>La lengua Arawak, hablada por comunidades indígenas en diversas regiones de América Latina, como los Wayuu en La Guajira, es una de las lenguas más antiguas y extensas del continente.</p>
+        <p>La lengua Arawak, hablada por comunidades indígenas en diversas regiones de América Latina, como los Wayuu en
+            La Guajira, es una de las lenguas más antiguas y extensas del continente.</p>
     </header>
     <main>
         <form action="{{ url_for('translate') }}" method="post">
@@ -20,13 +21,13 @@
                     required></textarea>
             </div>
             <div class="select_language">
-                <label for="language">Selecciona el idioma:</label>
-                <select name="" id="">
-                    <option value="es" selected>Español</option>
-                    <option value="en">Inglés</option>
-                    <option value="pt">Portugués</option>
-                    <option value="fr">Francés</option>
-                    <option value="jp">Japanese</option>
+                <select name="languages" id="language">
+                    <option value="id" disabled selected>Selecciona el idioma</option>
+                    <option value="ES">Español</option>
+                    <option value="EN">Inglés</option>
+                    <option value="PT">Portugués</option>
+                    <option value="FR">Francés</option>
+                    <option value="JP">Japanese</option>
                 </select>
             </div>
             <div class="button">
