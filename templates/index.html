@@ -6,11 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Translate</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=help"/>
 </head>
 
 <body>
     <header>
-        <h1>Traductor de lengua indígena Arawak</h1>
+        <h1>Traductor de lengua indígena Arawak
+            <a href="{{ url_for('about') }}">
+                <span class="material-symbols-outlined">
+                    help
+                </span>
+            </a>
+        </h1>
         <p>La lengua Arawak, hablada por comunidades indígenas en diversas regiones de América Latina, como los Wayuu en
             La Guajira, es una de las lenguas más antiguas y extensas del continente.</p>
     </header>

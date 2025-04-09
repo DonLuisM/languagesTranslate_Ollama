@@ -20,7 +20,7 @@ def translate():
     '''
     model = 'llama3.2'
     prompt = request.form['text']
-    language = request.form['languages']
+    # language = request.form['languages']
 
     try:
         response = ollama.chat(
@@ -32,9 +32,20 @@ def translate():
                 }
             ]
         )
-        return jsonify(response['message']['content'], language)
-    except TypeError as e:
-        return jsonify({'error': str(e)}), 500
+
+        translation = response['message']['content']
+        return translation
+    except KeyError as k:
+        return jsonify({'error': str(k)}), 500
+    except TypeError as t:
+        return jsonify({'error': str(t)}), 500
+    
+@app.route('/about')
+def about():
+    ''' 
+    Página de información sobre Arawak
+    '''
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
