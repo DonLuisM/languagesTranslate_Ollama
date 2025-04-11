@@ -26,7 +26,7 @@ def translate():
         error = "Tienes que seleccionar un idioma. Intenta de nuevo."
         return render_template('index.html', error=error)
 
-    prompt_model = f"Transalated {prompt} to the following language {language}"
+    prompt_model = f"Transalated ''{prompt}'' to the following language ''{language}''"
     print(prompt_model)
 
     # prompt para modelo. Tener en cuenta:
