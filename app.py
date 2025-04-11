@@ -1,7 +1,7 @@
 ''' 
 Adecuación del modelo Ollama para Flask
 '''
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 import ollama
 
 app = Flask(__name__)
@@ -20,7 +20,21 @@ def translate():
     '''
     model = 'llama3.2'
     prompt = request.form['text']
-    # language = request.form['languages']
+    language = request.form.get('languages')
+
+    if not language in ['ES', 'EN', 'PT', 'FR', 'JP']:
+        error = "Tienes que seleccionar un idioma. Intenta de nuevo."
+        return render_template('index.html', error=error)
+
+    prompt_model = f"Transalated {prompt} to the following language {language}"
+    print(prompt_model)
+
+    # prompt para modelo. Tener en cuenta:
+    #     ES = Español
+    #     EN - Ingles
+    #     PT - Portugues
+    #     FR - Frances
+    #     JP - Japones
 
     try:
         response = ollama.chat(
@@ -34,12 +48,14 @@ def translate():
         )
 
         translation = response['message']['content']
-        return translation
+        return render_template('index.html', translation=translation)
     except KeyError as k:
-        return jsonify({'error': str(k)}), 500
+        error = f"Error: {str(k)}"
+        return render_template('index.html', error=error)
     except TypeError as t:
-        return jsonify({'error': str(t)}), 500
-    
+        error = f"Error: {str(t)}"
+        return render_template('index.html', error=error)
+
 @app.route('/about')
 def about():
     ''' 
