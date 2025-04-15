@@ -24,8 +24,9 @@ def generate_response(model, prompt_model):
                     "role": "system", 
                     "content": (
                         "Eres un lingüista poliglota con profundo respeto a las lenguas indígenas. "
-                        "Tienes experiencia en traducir con precisión entre arawak y otros idiomas:" 
-                        "español,inglés,portugués,francés y japonés.")
+                        "Tienes experiencia en traducir con precisión entre arawak y otros idiomas: "
+                        "español, inglés, portugués, francés y japonés."
+                    )
                 },
                 {
                     "role": "user", 
@@ -43,40 +44,42 @@ def generate_response(model, prompt_model):
     except TypeError as t:
         error = f"Error: {str(t)}"
         return render_template('index.html', error=error)
-    
+
 def promptEngineering(model, prompt_model):
-    promptEngineering = f"""
-    Con la información obtenida del {prompt_model}, cumple las siguientes funciones/abarca los componentes
+    '''
+    Construcción del prompt especializado para el modelo
+    '''
+    prompt_engineered = f"""
+    Con la información obtenida del '{prompt_model}', cumple las siguientes funciones/abarca los componentes:
+
     # Componentes del Prompt (No tengas en cuenta el nombre de las variables en tu respuesta.)
-        persona = "Eres un lingüista multilingüe con profundo respeto por las lenguas indígenas. Tienes experiencia en traducir con precisión entre arawak y otros idiomas: español, inglés, portugués, francés y japonés.\n"
 
-        instrucción = (
-            "Traduce el texto entre arawak y el idioma solicitado. Si el texto está en arawak, tradúcelo al idioma objetivo. "
-            "Si está en otro idioma, tradúcelo al arawak. Luego, ofrece una explicación sencilla en arawak o en el idioma de destino, según corresponda.\n"
-        )
+    persona = "Eres un lingüista multilingüe con profundo respeto por las lenguas indígenas. Tienes experiencia en traducciones precisas entre arawak, español, inglés, portugués, francés y japonés."
 
-        contexto = (
-            "La traducción debe preservar el sentido cultural, espiritual y lingüístico del arawak. "
-            "Además, debe ser comprensible para personas indígenas que no hablan idiomas coloniales, y para estudiantes o investigadores que están aprendiendo arawak.\n"
-        )
+    instrucción = (
+      "Traduce el texto entre cualquiera de los idiomas indicados: arawak, español, inglés, portugués, francés o japonés. "
+      "Detecta el idioma de origen y tradúcelo al idioma solicitado."
+    )
 
-        data_format = (
-            "1) Traducción precisa al idioma solicitado.\n"
-            "2) Explicación simple del contenido en el idioma opuesto (es decir, en arawak o en el idioma extranjero).\n"
-            "3) (Opcional) Comentarios sobre palabras con significados culturales o difíciles de traducir.\n"
-        )
+    contexto = (
+         "La traducción debe conservar el significado cultural, espiritual y lingüístico del arawak en caso de estar involucrado. "
+         "Debe ser clara para hablantes indígenas que no manejan lenguas coloniales, y útil para estudiantes o investigadores que aprenden arawak. "
+         "Para otros idiomas, asegúrate de mantener precisión gramatical y sentido contextual."
+    )
 
-        audiencia = (
-            "Diseñado tanto para hablantes indígenas arawak que quieren entender otros idiomas, "
-            "como para personas de otras lenguas interesadas en aprender el arawak de forma respetuosa.\n"
-        )
+    data_format = (
+        "1) Traducción precisa al idioma solicitado."
+    )
 
-        tono = "El tono debe ser respetuoso, claro, culturalmente consciente y accesible.\n"
-        
-    Para la respuesta. Siempre procura usar una cantidad menor a 60 tokens, por lo que, debes ser muy especifico y explicito cumpliendo los items anteriores. Para los casos de Tono y audiencia no especifiques, son recomendaciones para tu guía de prompt y saber a quien va los resultados.
+    audiencia = (
+        "Diseñado para hablantes que desean entender otros idiomas, y para personas externas interesadas en aprender o traducir con respeto lenguas como el arawak."
+    )
+
+    tono = "El tono debe ser respetuoso, claro, culturalmente consciente y accesible."
+
+    Para la respuesta, procura usar una cantidad menor a 60 tokens. Sé específico y explícito cumpliendo los ítems anteriores.
     """
-    response = generate_response(model, promptEngineering)
-    return response
+    return generate_response(model, prompt_engineered)
 
 @app.route('/')
 def home():
@@ -94,11 +97,11 @@ def translate():
     prompt = request.form['text']
     language = request.form.get('languages')
 
-    if not language in ['ES', 'EN', 'PT', 'FR', 'JP']:
+    if language not in ['ES', 'EN', 'PT', 'FR', 'JP']:
         error = "Tienes que seleccionar un idioma. Intenta de nuevo."
         return render_template('index.html', error=error)
 
-    prompt_model = f"Transalated '{prompt}' to the following language '{language}'"
+    prompt_model = f"Translate '{prompt}' to the following language: '{language}'"
     print(prompt_model)
 
     return promptEngineering(model, prompt_model)
