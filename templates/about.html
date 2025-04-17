@@ -22,10 +22,68 @@
         </h1>
     </header>
     <main>
-        <p></p>
+        <section>
+            <div class="section_cards">
+                <div class="card">
+                    <h3>Historia de la tribu Arawak</h3>
+                    <img src="/static/assets/arawak_tribe.jpg" alt="Tribu Arawak">
+                    <br>
+                    <button class="boton_modal">
+                        <span>Ver más</span>
+                    </button>
 
+                    <dialog class="modal">
+                        <img class="img_modal" src="/static/assets/arawak_tribe.jpg" alt="Tribu Arawak">
+                        <p>Los Arawak fueron uno de los primeros pueblos indígenas en habitar gran parte del Caribe y el
+                            norte de América del Sur. Se establecieron en regiones como las Antillas Mayores (Cuba, La
+                            Española y Puerto Rico), y en las cuencas del Orinoco y el Amazonas.</p>
+                        <br>
+                        <p>Eran conocidos por su carácter pacífico, su agricultura avanzada y su habilidad en la
+                            navegación y la pesca. Cultivaban yuca, maíz, batata y tabaco, y vivían en comunidades
+                            organizadas bajo un sistema de cacicazgos.</p>
+                        <br>
+                        <p> Su lengua, el arahuaco, fue una de las primeras documentadas por los colonizadores europeos.
+                            Tras la llegada de los españoles en el siglo XV, muchos Arawak fueron esclavizados o
+                            murieron a causa de enfermedades y conflictos, pero su legado cultural perdura en la región
+                            hasta hoy.</p>
+                        <button class="cerrar_modal">Cerrar</button>
+                    </dialog>
+                </div>
+
+                <div class="card">
+                    <h3>Mapa</h3>
+                    <img src="/static/assets/arawak_language.jpg" alt="Mapa tribu">
+                    <br>
+                    <button class="boton_modal">
+                        <span>Ver más</span>
+                    </button>
+
+                    <dialog class="modal">
+                        <img class="img_modal" src="/static/assets/arawak_language.jpg" alt="Mapa tribu">
+                        <p> Este mapa muestra la distribución geográfica de los pueblos Arawak en la actualidad, a los cuales pertenecen los Arhuacos. Están ubicados en la Sierra Nevada de Santa Marta, Colombia. Su principal centro es Nabusímake, una aldea sagrada para su cultura. Los Arawak han ocupado regiones desde el Amazonas hasta el Caribe, como lo muestran las rutas migratorias en rojo. </p>
+                        <button class="cerrar_modal">Cerrar</button>
+                    </dialog>
+                </div>
+
+                <div class="card">
+                    <h3>Aldea Arawak</h3>
+                    <img src="/static/assets/arawak_village.jpg" alt="Aldea Arawak">
+                    <br>
+                    <button class="boton_modal">
+                        <span>Ver más</span>
+                    </button>
+
+                    <dialog class="modal">
+                        <img class="img_modal" src="/static/assets/arawak_village.jpg" alt="Aldea Arawak">
+                        <p>> Los Arawak, y particularmente los Arhuacos, mantienen una fuerte conexión espiritual con la naturaleza. Su cosmovisión gira en torno al equilibrio del universo, guiado por los mamos (sabios espirituales). Practican rituales de armonización, ofrendas a la tierra y enseñan desde pequeños el respeto por el entorno. Visten con ropa tejida a mano en lana blanca, simbolizando la pureza, y fabrican mochilas tradicionales que reflejan la historia y pensamiento de su comunidad.</p>
+                        <button class="cerrar_modal">Cerrar</button>
+                    </dialog>
+                </div>
+            </div>
+        </section>
     </main>
 
 </body>
+<script src="{{ url_for('static', filename='index.js') }}" defer></script>
 
 </html>
