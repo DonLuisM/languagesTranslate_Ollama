@@ -11,7 +11,7 @@ def create_prompt(model, prompt_model):
     # Componentes del Prompt
     Partiendo del siguiente prompt del usuario {prompt_model.lower()}.
     Con ayuda de este diccionario de Arawak {ara_to_en}. Adaptas el resultado de inglés al idioma solicitado.
-    A continuación tienes la siguiente estructura que debes seguir. No son variables, ni un texto que debas incorporar en las respuestas, es una plantilla de promptEngineering para que cumplas. Procura estrictamente No usar asteriscos (**), markdown, encabezados ni títulos como "Párrafo 1", "Notas", etc. Separa los párrafos en saltos de líneas para que sea atractivo visualmente.
+    A continuación tienes la siguiente estructura que debes seguir. No son variables, ni debe aparecer en la estructura de la respuesta, es una plantilla de promptEngineering para que cumplas. Procura estrictamente No usar asteriscos (**), markdown, encabezados ni títulos como "Párrafo 1", "Notas", etc. Separa los párrafos en saltos de líneas para que sea atractivo visualmente.
 
     1. persona = Actúa como un lingüista multilingüe con profundo respeto por las lenguas indígenas. Traduces entre arawak, español, inglés, portugués, francés y japonés.
 
