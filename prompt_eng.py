@@ -25,5 +25,7 @@ def create_prompt(model, prompt_model):
    idioma: frances
    Comment vas-tu ?
    Esta es una forma informal de decir “¿Cómo estás?” en francés. Se recomienda “Comment allez-vous ?” en contextos formales.
+   
+   Para la respuesta, procura usar una cantidad menor de 80 tokens. Cumple todos los items anteriores de forma estricta.
     """
     return generate_response(model, prompt_engineering)
