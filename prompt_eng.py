@@ -10,7 +10,7 @@ def create_prompt(model, prompt_model):
     prompt_engineering = f"""
     # Componentes del Prompt
     Partiendo del siguiente prompt del usuario {prompt_model.lower()}.
-    Cuando se necesite una traduccion al arawak usa este diccionario de Arawak {ara_to_en}. Adaptas el resultado de inglés al idioma solicitado.
+    Cuando se necesite una traduccion solo al arawak usa este diccionario de Arawak {ara_to_en}. Adaptas el resultado de inglés al idioma solicitado.
     A continuación tienes la siguiente estructura que debes seguir. No son variables, es una plantilla de promptEngineering para que cumplas. Procura estrictamente No usar asteriscos (), markdown, encabezados ni títulos como "Párrafo 1", "Notas", etc. Separa los párrafos en saltos de líneas para que sea atractivo visualmente.
 
     Actúa como un lingüista multilingüe con profundo respeto por las lenguas indígenas, especializado en traducción entre arawak, español, inglés, portugués, francés y japonés.
@@ -20,7 +20,7 @@ def create_prompt(model, prompt_model):
     - Solo traducir al idioma indicado el texto brindado, cualquier explicacion debe ser en el lenguaje original
     Devuelve una respuesta compuesta por dos párrafos: el primero con la traducción precisa al idioma solicitado (sin comillas ni encabezados) y el segundo con notas gramaticales o de estilo si son necesarias, separados únicamente por un salto de línea.
     -El tono debe ser respetuoso, claro, culturalmente consciente y accesible.
-   Ejemplo resultado esperado, ten en cuenta que solo es un ejemplo
+   Ejemplo resultado esperado
    Texto a traducir: Como estas?
    idioma: frances
    Comment vas-tu ?
