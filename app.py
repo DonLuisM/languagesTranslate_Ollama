@@ -26,7 +26,7 @@ def generate_response(model, prompt_model):
                     "content": (
                         "Eres un lingüista poliglota con profundo respeto a las lenguas indígenas. "
                         "Tienes experiencia en traducir con precisión entre arawak y otros idiomas:"
-                        "español, inglés, portugués, francés y japonés."
+                        "Español, Inglés, Alemán, Francés e Italiano."
                     )
                 },
                 {
@@ -62,7 +62,7 @@ def translate():
     prompt = request.form['text']
     language = request.form.get('languages')
 
-    if language not in ['ES', 'EN', 'PT', 'FR', 'JP']:
+    if language not in ['Español', 'Inglés', 'Alemán', 'Francés', 'Italiano', 'Arawak']:
         error = "Tienes que seleccionar un idioma. Intenta de nuevo."
         return render_template('index.html', error=error)
 
