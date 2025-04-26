@@ -34,8 +34,6 @@ ara_to_en = {
     "d-ada-n": "My tree",
     "karobo": "Plate",
     "wa-karobo-n": "Our plate",
-
-    
     "by-simaka-i": "You called him",    
     "li simaka-o": "He called us",    
     "ly-simaka bo": "He called you",    
