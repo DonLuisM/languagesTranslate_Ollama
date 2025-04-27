@@ -4,8 +4,14 @@ Adecuación del modelo Ollama para Flask
 from flask import Flask, render_template, request
 import ollama
 from prompt_eng import create_prompt
+import re
 
 app = Flask(__name__)
+
+def format_translation(text):
+    # Reemplazar formato texto a negrita
+    text = re.sub(r'###(.*?)###', r'<strong>\1</strong>', text)
+    return text
 
 def generate_response(model, prompt_model):
     ''' 
@@ -37,6 +43,7 @@ def generate_response(model, prompt_model):
             options=options
         )
         translation = response['message']['content']
+        translation = format_translation(translation)
         print(translation)
         return render_template('index.html', translation=translation)
     except KeyError as k:
@@ -68,7 +75,7 @@ def translate():
 
     prompt_model = f"Traduce el texto: '{prompt}' al siguiente idioma: '{language}'."
     print(prompt_model)
-    return create_prompt(model, prompt_model)
+    return create_prompt(model, prompt_model, language)
 
 @app.route('/about')
 def about():

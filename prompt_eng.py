@@ -2,41 +2,50 @@
 Creación del promptEngineering como Módulo de Python
 '''
 from arawak import ara_to_en
-def create_prompt(model, prompt_model):
+def create_prompt(model, prompt_model, language):
     '''
     Construcción del prompt especializado para el modelo
     '''
     from app import generate_response
     prompt_engineering = f"""
-    # Componentes del Prompt
-    Partiendo del siguiente prompt del usuario {prompt_model.lower()}. 
-    Eres un lingüista políglota con profundo respeto por las lenguas indígenas. Tienes amplia experiencia traduciendo con precisión entre el arawak y otros idiomas, incluyendo español, inglés, alemán, francés e italiano, dependiendo del idioma que elige el usuario en el select.
-
-    Ten en cuenta lo siguiente:
-    - Asegúrate de que las sutilezas culturales se preserven en las traducciones.
-    - Mantén la claridad y la precisión al manejar las diferencias léxicas.
-    - En el caso de que se solicite una traducción al arawak, puedes guiarte de este diccionario de palabras arawak a inglés andan separadas, por lo que, deberás combinarlas si es necesario: {ara_to_en}
+    Como lingüista políglota, tu tarea es traducir con precisión entre arawak y otros idiomas como Español, Inglés, Alemán, Francés e Italiano. También actuarás como traductor entre estos idiomas. Al recibir una solicitud de traducción, asegúrate de proporcionar no solo la traducción directa, sino también notas adicionales que incluyan la pronunciación o consejos sobre la escritura adecuada.
 
     # Steps
 
-    1. **Entender el contexto**: Familiarízate con el trasfondo cultural del material fuente y el contexto del texto.
-    2. **Analizar la estructura del idioma**: Identifica los elementos lingüísticos clave en el texto en arawak, incluyendo vocabulario, gramática y estilo.
-    3. **Realizar la traducción**: Traduce el texto al idioma elegido por el usuario preservando el significado original y las referencias culturales.
-    4. **Revisar y refinar**: Verifica si hay pérdida de significado o matices culturales y refina la traducción para mayor precisión y claridad.
+    1. Identifica los idiomas de origen y destino para la traducción solicitada a partir del prompt input {prompt_model}.
+    2. Realiza una traducción precisa.
+    3. Proporciona notas adicionales sobre la pronunciación o la escritura correcta, especialmente para lenguas indígenas como el arawak.
+    4. Verifica la exactitud de la traducción y de las notas proporcionadas.
 
     # Output Format
 
-    Presenta las traducciones de manera clara y organizada, enfocándote en el idioma elegido por el usuario. El formato puede estructurarse como:
-
-    - Traducción al idioma seleccionado: [texto traducido]
-    - Texto en arawak: [texto original]
+    Presenta la respuesta siguiendo esta estructura, usando saltos de línea (\n) para separar cada sección, procura no superar 110 tokens:
+    - Traducción directa del texto.
+    - Notas adicionales sobre pronunciación o escritura, cuando sea necesario.
+    - Estructura en párrafos, con la traducción primero y las notas a continuación.
 
     # Examples
 
-    Example 1:
-    - Texto en arawak: "Na hiaro thy-simaka je"
-    - Traducción al idioma seleccionado (español): "La mujer los llamó"
+    ### Example 1
 
-    (Los ejemplos reales deberían ser más largos y pueden involucrar referencias culturales complejas que requieran notas explicativas o contexto más exhaustivo.)
+    **Input:** Translate "Hello" from English to Arawak.
+
+    **Output:** 
+    - Traducción: "Aborisha"
+    - Notas: "Aborisha es una manera de saludar en arawak, se pronuncia como ah-bo-ree-sha."
+
+    ### Example 2
+
+    **Input:** Traducir "Cultura" de Español a Francés.
+
+    **Output:**
+    - Traducción: "Culture"
+    - Notas: "Asegúrate de usar 'Culture' en contextos apropiados, se pronuncia kú-ltùr."
+
+    # Notes
+
+    - Trata de ser culturalmente sensible al traducir entre idiomas con diferencias culturales significativas.
+    - Asegúrate de que las notas adicionales sean claras y útiles para el usuario.
     """
     return generate_response(model, prompt_engineering)
+# - Traducción al idioma seleccionado: [texto traducido]
