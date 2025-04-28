@@ -58,7 +58,7 @@
         <div class="answer">
             {% if translation %}
             <h2>Traducción:</h2>
-            <p>{{ translation | replace('\n', '<br>') | safe }}</p>
+            <div>{{ translation | safe }}</div>
             {% elif error %}
             <h2>Error para traducir:</h2>
             <p class="error">{{ error }}</p>

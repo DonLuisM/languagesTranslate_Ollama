@@ -8,6 +8,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background: fixed no-repeat center center/cover url("/static/assets/background.png");
     position: relative;
+    justify-content: center;
 }
 
 header {
@@ -92,6 +93,8 @@ main {
     display: grid;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
 /* Form text_area and select_language */
@@ -256,28 +259,28 @@ circle {
 /* Proceso de respuesta */
 .answer {
     margin: 2em auto;
-    justify-content: center;
-    align-items: center;
-    height: 250px;
-    max-width: 700px;
+    text-align: left;
+    min-height: 300px;
     width: 100%;
+    max-width: 700px;
     background-color: white;
     border-radius: 1em;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     box-sizing: border-box;
-    border: 3px solid #ccc;
+    border: 3px solid #ccc;    
 }
 
 .answer h2 {
     text-align: center;
     font-size: 1.5em;
     color: #1f1f1f;
+    opacity: 0.7;
     margin-top: 0.5em;
     font-style: italic;
 }
 
-.answer p {
-    padding: 1em;
+.answer div {
+    padding: 0.5em 2em;
     text-align: justify;
     font-size: 1em;
 }
