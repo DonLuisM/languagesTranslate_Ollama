@@ -94,7 +94,6 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 100%;
 }
 
 /* Form text_area and select_language */
@@ -103,14 +102,15 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 700px;
+    margin: 2em auto;
 }
 
 .text_group {
-    display: grid;
     border-radius: 1em;
-    margin: 2em auto;
-    min-width: 700px;
+    min-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1em;
 }
 
 .text_group textarea {
@@ -258,16 +258,16 @@ circle {
 
 /* Proceso de respuesta */
 .answer {
-    margin: 2em auto;
-    text-align: left;
-    min-height: 300px;
     width: 100%;
-    max-width: 700px;
+    min-height: 300px;
+    max-width: 900px;
     background-color: white;
-    border-radius: 1em;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     box-sizing: border-box;
     border: 3px solid #ccc;    
+    text-align: left;
+    border-radius: 1em;
+    padding: 0.5em;
 }
 
 .answer h2 {
@@ -290,21 +290,6 @@ circle {
     text-align: center;
     font-size: 1.2em;
     font-weight: 800;
-}
-
-/* Medias querys */
-@media (max-width: 600px) {
-    header {
-        padding: 1em;
-    }
-
-    header h1 {
-        font-size: 1.4em;
-    }
-
-    header p {
-        font-size: 1em;
-    }
 }
 
 /* Sección About */
@@ -352,11 +337,6 @@ section {
 .boton_modal {
     width: 100%;
 }
-/* .card p {
-    padding: 0 1rem;
-    color: #666;
-    flex-grow: 1;
-} */
 
 /* Configuración del Modal (dialog) */
 .modal {
@@ -406,4 +386,76 @@ section {
 
 .cerrar_modal:focus{
     outline: none;
+}
+
+/* Medias querys */
+@media (max-width: 600px) {
+    header {
+        padding: 1em;
+    }
+    header h1 {
+        font-size: 1.4em;
+    }
+    header p {
+        font-size: 1em;
+    }
+    .text_group, .select_language, .answer {
+        min-width: unset;
+        max-width: 360px;
+        width: 100%;
+        padding: 0.5em;
+    }
+    form {
+        width: auto;
+        padding: 0;
+    }
+    .select_language {
+        margin: 0 auto;
+        margin-top: 1em;
+        min-width: unset;
+        width: 90%;
+    }
+    .answer{
+        margin: 0 auto;
+        margin-bottom: 2em;
+    }
+    .section_cards {
+        grid-template-columns: 1fr;
+    }
+    .card {
+        min-height: auto;
+    }
+    .modal {
+        width: 90%;
+        padding: 1em;
+    }
+    .img_modal {
+        height: auto;
+    }
+}
+@media (min-width: 601px) and (max-width: 1000px){
+    .text_group, .select_language, .answer {
+        min-width: unset;
+        width: 100%;
+        max-width: 700px;
+        padding: 1em;
+        margin: 0 auto;
+    }
+    .select_language {
+        min-width: unset;
+        width: 80%;
+        margin-top: 1em;
+        padding: 0.5em;
+    }
+    .answer{
+        margin: 0 auto;
+        margin-bottom: 2em;
+    }
+    .modal {
+        width: 85%;
+        padding: 1.5em;
+    }
+    .section_cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

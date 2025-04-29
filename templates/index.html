@@ -54,14 +54,15 @@
                 </div>
             </div>
         </form>
-
         <div class="answer">
             {% if translation %}
-            <h2>Traducción:</h2>
-            <div>{{ translation | safe }}</div>
+                <h2>Traducción:</h2>
+                <div>{{ translation | safe }}</div>
             {% elif error %}
-            <h2>Error para traducir:</h2>
-            <p class="error">{{ error }}</p>
+                <h2>Error para traducir:</h2>
+                <p class="error">{{ error }}</p>
+            {% else %}
+                <h2>Traducción:</h2>
             {% endif %}
         </div>
     </main>
