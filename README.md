@@ -27,8 +27,7 @@ Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source)
 ollama
 
 # Descargar modelos Llama3.1
-ollama run llama3.1:8b
-ollama run llama3.1:8b-instruct-q5_0
+ollama run llama3.1:8b-instruct-q5_K_M
 ```
 > [!NOTE]
 > Los modelos LLaMA 3.1 8B y 8B-Instruct-Q5_0 tienen un tamaño de **_4.9 GB_** y **_5.6 GB_**, respectivamente.
@@ -57,4 +56,5 @@ Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repos
 ### :busts_in_silhouette: Autores:
 - [@ingrid183](https://github.com/ingrid183)
 - [@Juandiego001](https://github.com/Juandiego001)
+- [@seba39399](https://github.com/seba39399)
 - [@DonLuisM](https://github.com/DonLuisM)
