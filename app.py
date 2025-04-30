@@ -60,7 +60,7 @@ def translate():
     ''' 
     Función para obtener la respuesta del modelo Ollama
     '''
-    model = 'llama3.1:8b-instruct-q5_0'
+    model = 'llama3.1:8b-instruct-q5_K_M'
     prompt = request.form['text']
     language = request.form.get('languages')
 
