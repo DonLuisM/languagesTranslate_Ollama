@@ -57,4 +57,5 @@ Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repos
 ### :busts_in_silhouette: Autores:
 - [@ingrid183](https://github.com/ingrid183)
 - [@Juandiego001](https://github.com/Juandiego001)
+- [@seba39399](https://github.com/seba39399)
 - [@DonLuisM](https://github.com/DonLuisM)
