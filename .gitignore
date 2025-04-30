@@ -10,3 +10,5 @@ wheels/
 .venv
 
 .python-version
+
+st/__pycache__

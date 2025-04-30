@@ -6,7 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "flask>=3.1.0",
+    "langchain-ollama>=0.3.2",
     "markdown>=3.8",
     "ollama>=0.4.7",
     "pylint>=3.3.6",
+    "streamlit>=1.45.0",
 ]
