@@ -43,7 +43,7 @@ ollama
 ollama run llama3.1:8b-instruct-q5_K_M
 ```
 > [!NOTE]
-> Los modelos LLaMA 3.1 8B y 8B-Instruct-Q5_0 tienen un tamaño de **_4.9 GB_** y **_5.6 GB_**, respectivamente.
+> Los modelos LLaMA 3.1 8B y 8B-Instruct-Q5_K_M tienen un tamaño de **_4.9 GB_** y **_5.7 GB_**, respectivamente.
 
 ### 3. Clona el repositorio e instalar dependencias
 ```bash
