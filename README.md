@@ -13,6 +13,7 @@ Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source)
 - Ollama
 - Flask
 - HTML, CSS, JS
+- Streamlit
 
 ---
 ## :hammer_and_wrench: Configuración
