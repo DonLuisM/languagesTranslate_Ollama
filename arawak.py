@@ -1,10 +1,20 @@
 ara_to_en = {
-    "pero": "Perro",
-    "polata": "Money",
     "kabadaro": "Jaguar",
+    "pero": "Dog",
+    "óri": "Snake",
+    "óribe": "Snakes",
+    "hime": "Fish",
+    "himebe": "Fishes",
+    "arabaio": "Frog",
+    "kodibio": "Bird",
+    "kalhina": "Chicken",
+    "polata": "Money",
     "wadili": "Man",
     "hiaro": "Woman",
     "ibili": "Child",
+    "kakythinon": "People",
+    
+    # Colores
     "bunaro": "Brown",
     "karime": "Black",
     "hehe": "Grey",
@@ -13,13 +23,24 @@ ara_to_en = {
     "kore": "Red",
     "blu": "Blue",
     "imoro": "Green",
-    "plural_human": {
-        "na": "The",
-        "naha": "These",
-        "nara": "Those",
-        "naraha": "Those",
-        "narabo": "There"
-    },
+    
+    # plural humano
+    "na": "The",
+    "naha": "These",
+    "nara": "Those",
+    "naraha": "Those",
+    "narabo": "There",
+    "ne": "They",
+    "li": "He",
+    "tho": ["She", "It"],
+    
+    # Adjetivos
+    "firo" : "Big",
+    "firo sabo" : "Bigger",
+    "firo wábo" : "Biggest",
+    
+    # Frases
+    "da-sikoa" : "My house",
     "de dyna": "My arm",
     "dyna-ha": "Arm",
     "khabo-ho": "Hand",
@@ -40,5 +61,53 @@ ara_to_en = {
     "tho simaka-i": "She called him",    
     "thy-simaka je": "She called them",    
     "ama to toho?": "What is this?",
-    "to kodibio": "The bird",
+    "nykamy-ka-i": "He is sad",
+    "tora hiaro to da-retho": "That woman is my wife",
+    "lira wadili to da-rethi": "That man is my husband",
+    
+    # Oraciones Futuras y Presente
+    "li fara-fa": "He will fight",
+    "thy-simaka-fa-i" : "She will call him",
+    "na-mithada-fa" : "They will laugh",
+    "li fary-fa aba kabadaro" : "He will kill a jaguar",
+    "to hiaro kanaba-fa" : "The woman will listen",
+    "li fara-fa to kabadaro oma" : "He will fight with the jaguar",
+    "da-simaka-bo no" : "I am calling her",
+    "da-siki-fa no ly-myn by-myn" : "I will give it to him for you",
+    "hebe-fa-n" : "It will be full",
+    "hala diako-fa-i" : "He will be on the bench",
+    
+    # Verbos
+    "sa-n" : "To be good",
+    "hehe-n" : "To be yellow",
+    "firo-n" : "To be big",
+    "mimi-n" : "To be cold",
+    "nykamy-n" : "To be sad",
+    "thonolisia-n" : "To have a cold",
+    "kawa-n" : "To be abstent",
+    "alokosia-n" : "To be thirsty",
+    
+    # Preguntas
+    "ama": "what",
+    "amabia": "why (for what purpose)",
+    "amadoma": "why (what is the cause)",
+    "(h)alika": "how",
+    "(h)alikan": "who",
+    "(h)alikadin": "in what manner exactly",
+    "(h)alo(n), ano(n)": "where",
+    "(h)alikha": "when",
+    "fata": "how many",
+    "alo-nro b-osa-bo?" : "Where are you going?",
+    "ama b-ani-bo?" : "What are you doing?",
+    
+    # Palabras temporales
+    "wakhili": "ancient times (time of forefathers)",
+    "abahan": "once (past or future)",
+    "(w)akharo": "nowadays, at this moment",
+    "ykha": "now",
+    "tano": "today",
+    "miaka": "yesterday",
+    "miakaboan": "day before yesterday",
+    "mothi": "tomorrow",
+    "motheboan": "day after tomorrow"
 }

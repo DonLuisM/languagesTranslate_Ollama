@@ -3,8 +3,8 @@ Adecuación del modelo Ollama para Flask
 '''
 from flask import Flask, render_template, request
 import ollama
-from prompt_eng import create_prompt
 import markdown
+from prompt_eng import create_prompt
 
 app = Flask(__name__)
 
@@ -70,7 +70,8 @@ def translate():
 
     prompt_model = f"Traduce el texto: '{prompt}' al siguiente idioma: '{language}'."
     print(prompt_model)
-    return create_prompt(model, prompt_model, language)
+    prompt = create_prompt(prompt_model)
+    return generate_response(model, prompt)
 
 @app.route('/about')
 def about():

@@ -68,12 +68,12 @@ if user_input:
 
     # Crear contenedores en tabs dinámicas según cantidad de modelos
     tabs = st.tabs([model_name for model_name in lista])
-    
+
     # Procesar cada modelo en paralelo
     for idx, model_name in enumerate(lista):
         with tabs[idx]:
             st.write(f"**Modelo:** `{model_name}`")
-            
+   
             try:
                 # Configurar modelo específico
                 llm = ChatOllama(
@@ -83,17 +83,17 @@ if user_input:
                     top_k=st.session_state.top_k,
                     num_predict=st.session_state.max_tokens
                 )
-                
-                prompt = create_prompt(model_name, user_input, language)
+  
+                prompt = create_prompt(user_input, language)
                 messages = [
                     ("system", prompt),
                     ("human", user_input)
                 ]
-                
+  
                 # Generar y mostrar respuesta
                 with st.spinner(f"*Pensando con {model_name}...*"):
                     response = llm.invoke(messages)
-                    
+ 
                     st.write("**Respuesta:**")
                     st.write(response.content)
                     
@@ -112,6 +112,9 @@ if user_input:
                         "respuesta": response.content,
                         "metadata": response.response_metadata
                     })
+                
+                with st.expander("Ver respuesta Cruda"):
+                    st.write(response)
                     
             except Exception as e:
                 st.error(f"Error en {model_name}: {str(e)}")
@@ -123,3 +126,4 @@ with st.expander("Ver historial completo"):
         st.write(f"**Pregunta:** {entry['pregunta']}")
         st.write(f"**Respuesta:** {entry['respuesta']}")
         st.divider()
+ 
