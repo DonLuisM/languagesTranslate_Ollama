@@ -1,10 +1,12 @@
 # :brain: _Traductor Multilingüe LLMs_
-Este proyecto es una interfaz web con HMTL y CSS(Jinja2) que permite traducir entre idiomas modernos (Español, Inglés, Alemán, Francés, Italiano) y adicionalmente, conocer sobre la lengua indígena Arawak.
+Este proyecto es una interfaz web con HMTL (Jinja2) y CSS que permite traducir entre idiomas modernos (Español, Inglés, Alemán, Francés, Italiano) y adicionalmente, conocer sobre la lengua indígena Arawak.
 Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source), integrados con Flask, para generar traducciones precisas y culturalmente informadas.
 
 ### :dart: Características
 - Traducción entre Arawak y otros idiomas modernos.
 - Uso de LLMs para generación de texto con enfoque cultural.
+- Diseño responsivo para móviles y tablets.
+- Uso de streamlit para comparar diferentes respuestas de los modelos Ollama instalados.
 - <!-- Agregar más -->
   
 ### :rocket: Tecnologías usadas
@@ -15,6 +17,16 @@ Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source)
 - HTML, CSS, JS
 - Streamlit
 
+### :framed_picture: Visualización de la aplicación
+
+| Vista Web | Vista Móvil |
+|-----------|-------------|
+| ![webapp](./static/assets/appFront.jpg) | ![mobile](./static/assets/appMobile.jpg) |
+
+| Vista Streamlit |
+|------------------|
+| ![st](./static/assets/appStreamlit.jpg) |
+ 
 ---
 ## :hammer_and_wrench: Configuración
 
@@ -45,6 +57,11 @@ uv sync
 ### 4. Ejecutar la aplicación
 ```bash
 uv run app.py
+```
+
+### 5. Ejecutar el streamlit para comparar respuestas
+```bash
+uv run streamlit run .\streamlit\app_st_cont.py   
 ```
 ---
 
