@@ -33,6 +33,8 @@ Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source)
 ### 1. Descargar Ollama y uv
 - Ollama - [Download](https://ollama.com/)
 - uv - [Terminal](https://docs.astral.sh/uv/#__tabbed_1_1)
+> [!IMPORTANT]
+> Para correr satisfactoriamente la aplicación y configuración debes contar con UV Python y Ollama (LLMs Open Source).
 
 ### 2. Instalar modelo de Ollama: [Llama3.1](https://ollama.com/library/llama3.1)
 ```bash
