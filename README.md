@@ -7,7 +7,8 @@ Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source)
 - Uso de LLMs para generación de texto con enfoque cultural.
 - Diseño responsivo para móviles y tablets.
 - Uso de streamlit para comparar diferentes respuestas de los modelos Ollama instalados.
-- <!-- Agregar más -->
+- Optimización del modelo con herramientas de Prompt Engineering. 
+- Preservación y revitalización lingüística.
   
 ### :rocket: Tecnologías usadas
 - Python
