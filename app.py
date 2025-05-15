@@ -3,6 +3,7 @@ Adecuación del modelo Ollama para Flask
 '''
 from flask import Flask, render_template, request
 import ollama
+from langchain_ollama import ChatOllama
 import markdown
 from prompt_eng import create_prompt
 
@@ -27,7 +28,7 @@ def generate_response(model, prompt_model):
                     "content": (
                         "Eres un lingüista poliglota con profundo respeto a las lenguas indígenas. "
                         "Tienes experiencia en traducir con precisión entre arawak y otros idiomas:"
-                        "Español, Inglés, Alemán, Francés e Italiano."
+                        "Español, Inglés, Alemán, Francés e Italiano. /nothink"
                     )
                 },
                 {
@@ -60,18 +61,17 @@ def translate():
     ''' 
     Función para obtener la respuesta del modelo Ollama
     '''
-    model = 'llama3.1:8b-instruct-q5_K_M'
-    prompt = request.form['text']
+    # model = 'llama3.1:8b-instruct-q5_K_M'
+    model = 'qwen3'
+    prompt_get = request.form['text']
     language = request.form.get('languages')
 
     if language not in ['Español', 'Inglés', 'Alemán', 'Francés', 'Italiano', 'Arawak']:
         error = "Tienes que seleccionar un idioma. Intenta de nuevo."
         return render_template('index.html', error=error)
 
-    prompt_model = f"Traduce el texto: '{prompt}' al siguiente idioma: '{language}'."
-    print(prompt_model)
-    prompt = create_prompt(prompt_model)
-    return generate_response(model, prompt)
+    prompt_response = create_prompt(prompt_get, language)
+    return generate_response(model, prompt_response)
 
 @app.route('/about')
 def about():

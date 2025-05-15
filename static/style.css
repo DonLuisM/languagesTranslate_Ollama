@@ -12,12 +12,11 @@ body {
 }
 
 header {
-    display: grid;
     text-align: center;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 2em;
+    background-color: rgba(43, 43, 43, 0.5);
+    padding: 0.7em;
     color: white;
 }
 
@@ -34,9 +33,7 @@ header a {
     margin: 0.5em auto;
 }
 
-header a:hover {
-    color: #c7c7c7;
-}
+header a:hover {color: #c7c7c7;}
 
 .material-symbols-outlined {
     position: relative;
@@ -87,6 +84,57 @@ header a:hover {
 header p {
     font-size: 1.1em;
     margin: 0.5em auto;
+}
+
+nav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(43, 43, 43, 0.9);
+    overflow-x: hidden;
+    transition: 0.7s;
+    padding-top: 60px;
+}
+
+nav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+}
+
+nav a:hover {color: #f1f1f1;}
+
+nav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#sidebar {
+    background-color: rgba(43, 43, 43, 0.5);
+    margin: 0;
+}
+
+.sidebar-option{
+    font-size: 2em;
+    margin: 1em;
+    cursor: pointer;
+    color: white;
+}
+
+#main {transition: margin-left .7s;}
+
+@media screen and (max-height: 450px) {
+  nav {padding-top: 15px;}
+  nav a {font-size: 18px;}
 }
 
 main {
@@ -212,7 +260,7 @@ button:active {
 }
 
 svg {
-    width: 3.25em;
+    width: 2.5em;
     transform-origin: center;
     animation: rotate4 2s linear infinite;
 }
@@ -334,9 +382,7 @@ section {
     text-align: center;
 }
 
-.boton_modal {
-    width: 100%;
-}
+.boton_modal {width: 100%;}
 
 /* Configuración del Modal (dialog) */
 .modal {
@@ -384,21 +430,14 @@ section {
     color: white;
 }
 
-.cerrar_modal:focus{
-    outline: none;
-}
+.cerrar_modal:focus{outline: none;}
 
 /* Medias querys */
 @media (max-width: 600px) {
-    header {
-        padding: 1em;
-    }
-    header h1 {
-        font-size: 1.4em;
-    }
-    header p {
-        font-size: 1em;
-    }
+    header {padding: 1em;}
+    header h1 {font-size: 1.4em;}
+    header p {font-size: 1em;}
+    .sidebar-option{font-size: 1.5em;}
     .text_group, .select_language, .answer {
         min-width: unset;
         max-width: 360px;
@@ -419,19 +458,13 @@ section {
         margin: 0 auto;
         margin-bottom: 2em;
     }
-    .section_cards {
-        grid-template-columns: 1fr;
-    }
-    .card {
-        min-height: auto;
-    }
+    .section_cards {grid-template-columns: 1fr;}
+    .card {min-height: auto;}
     .modal {
         width: 90%;
         padding: 1em;
     }
-    .img_modal {
-        height: auto;
-    }
+    .img_modal {height: auto;}
 }
 @media (min-width: 601px) and (max-width: 1000px){
     .text_group, .select_language, .answer {
