@@ -1,4 +1,7 @@
-# :brain: _Traductor Multilingüe LLMs_
+# :brain: _Traductor Multilingüe LLMs_ [V1](./streamlit_V1)
+> [!IMPORTANT]
+> _Para visualizar la Versión 2 del proyecto (README, archivos .py y mejoras), dirijase a la siguiente ruta [V2](./streamlit_v2)_
+
 Este proyecto es una interfaz web con HMTL (Jinja2) y CSS que permite traducir entre idiomas modernos (Español, Inglés, Alemán, Francés, Italiano) y adicionalmente, conocer sobre la lengua indígena Arawak.
 Utiliza modelos de lenguaje LLM como LLamA 3.1 a través de Ollama (Open Source), integrados con Flask, para generar traducciones precisas y culturalmente informadas.
 
