@@ -9,7 +9,7 @@ from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import LLMChain
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from streamlit_V1.prompt_st import create_prompt
 from persistencia_memoria import init_chats
 from botones_acceso import palabraDia, expliTribu, adivinaPalabra
