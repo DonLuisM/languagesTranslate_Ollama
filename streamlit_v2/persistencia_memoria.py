@@ -6,89 +6,84 @@ import streamlit as st
 import uuid
 
 # Crear prompt
-prompt = PromptTemplate.from_template("""
-Historial de conversación:
-{chat_history}
+# prompt = PromptTemplate.from_template("""
+# Historial de conversación:
+# {chat_history}
 
-Usuario: {input}
-Asistente:
-""")
+# Usuario: {input}
+# Asistente:
+# """)
 
-# Inicializar estructura multichat
-if "chats" not in st.session_state:
-    st.session_state.chats = {}
+def init_chats(session_state):
+    """
     
-if "chat_actual" not in st.session_state:
-    # Crear primer chat
-    chat_id = str(uuid.uuid4())[:8]
-    st.session_state.chats[chat_id] = {
-        "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
-        "historial": [],
-        "nombre": "Chat"
-    }
-    st.session_state.chat_actual = chat_id
+    """
+    if "chats" not in session_state:
+        session_state.chats = {}
 
-
-# if "historial" in st.session_state:
-#     for i, item in enumerate(st.session_state.historial):
-#         st.markdown(f"**{i+1}. {item['nombre']}** → {item['idioma']}")
-# else:
-#     st.info("No hay historial todavía.")
-    
-# Sidebar: seleccionar o crear chats
-with st.sidebar:
-    st.title("💬 Chats")
-    # Lista de chats
-    for cid, chat in st.session_state.chats.items():
-        if st.button(chat["nombre"], key=cid):
-            st.session_state.chat_actual = cid
-
-    if st.button("Nuevo Chat Ji"):
-        new_id = str(uuid.uuid4())[:8]
-        st.session_state.chats[new_id] = {
+    if "chat_actual" not in session_state:
+        chat_id = str(uuid.uuid4())[:8]
+        session_state.chats[chat_id] = {
             "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
             "historial": [],
-            "nombre": f"Chat {len(st.session_state.chats)+1}"
+            "nombre": "Chat"
         }
-        st.session_state.chat_actual = new_id
+        session_state.chat_actual = chat_id
+    
+# Sidebar: seleccionar o crear chats
+# with st.sidebar:
+#     st.title("💬 Chats")
+#     # Lista de chats
+#     for cid, chat in st.session_state.chats.items():
+#         if st.button(chat["nombre"], key=cid):
+#             st.session_state.chat_actual = cid
 
-    st.write("---")
-    st.write("📌 Chat activo:", st.session_state.chats[st.session_state.chat_actual]["nombre"])
+#     if st.button("Nuevo Chat Ji"):
+#         new_id = str(uuid.uuid4())[:8]
+#         st.session_state.chats[new_id] = {
+#             "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
+#             "historial": [],
+#             "nombre": f"Chat {len(st.session_state.chats)+1}"
+#         }
+#         st.session_state.chat_actual = new_id
 
-# Configuración modelo
-llm = ChatOllama(
-    model="qwen3:latest",
-    temperature=0.4,
-    num_predict=256,
-)
+#     st.write("---")
+#     st.write("📌 Chat activo:", st.session_state.chats[st.session_state.chat_actual]["nombre"])
 
-# Obtener memoria e historial del chat actual
-chat = st.session_state.chats[st.session_state.chat_actual]
-memory = chat["memory"]
-historial = chat["historial"]
+# # Configuración modelo
+# llm = ChatOllama(
+#     model="qwen3:latest",
+#     temperature=0.4,
+#     num_predict=256,
+# )
 
-# Mostrar historial en pantalla
-st.title(chat["nombre"])
-for mensaje in historial:
-    with st.chat_message(mensaje["role"]):
-        st.write(mensaje["content"])
+# # Obtener memoria e historial del chat actual
+# chat = st.session_state.chats[st.session_state.chat_actual]
+# memory = chat["memory"]
+# historial = chat["historial"]
 
-# Input del usuario
-user_input = st.chat_input("Escribe algo...")
+# # Mostrar historial en pantalla
+# st.title(chat["nombre"])
+# for mensaje in historial:
+#     with st.chat_message(mensaje["role"]):
+#         st.write(mensaje["content"])
 
-if user_input:
-    historial.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.write(user_input)
+# # Input del usuario
+# user_input = st.chat_input("Escribe algo...")
 
-    chain = LLMChain(llm=llm, prompt=prompt, memory=memory)
-    with st.spinner("Pensando..."):
-        try:
-            result = chain.invoke({"input": user_input})
-            respuesta = result["text"]
-            historial.append({"role": "assistant", "content": respuesta})
+# if user_input:
+#     historial.append({"role": "user", "content": user_input})
+#     with st.chat_message("user"):
+#         st.write(user_input)
 
-            with st.chat_message("assistant"):
-                st.write(respuesta)
-        except Exception as e:
-            st.error(f"❌ Error: {e}")
+#     chain = LLMChain(llm=llm, prompt=prompt, memory=memory)
+#     with st.spinner("Pensando..."):
+#         try:
+#             result = chain.invoke({"input": user_input})
+#             respuesta = result["text"]
+#             historial.append({"role": "assistant", "content": respuesta})
+
+#             with st.chat_message("assistant"):
+#                 st.write(respuesta)
+#         except Exception as e:
+#             st.error(f"❌ Error: {e}")

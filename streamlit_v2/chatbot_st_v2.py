@@ -1,10 +1,18 @@
 import time
 import os
+import sys
 import ollama
+import uuid
 import streamlit as st
 from langchain_ollama import ChatOllama
-from streamlit.V1.prompt_st import create_prompt
+from langchain.prompts import PromptTemplate
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import LLMChain
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from streamlit_V1.prompt_st import create_prompt
+from persistencia_memoria import init_chats
+from botones_acceso import palabraDia, expliTribu, adivinaPalabra
 
 # * ------------ Funciones -----------
 def stream_text(text):
@@ -24,6 +32,9 @@ def clc_chat_history():
         "content": "Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. \n\n ¿Deseas aprender una palabra en Arawak?"
     }]
     st.session_state.language = "Español"
+    st.session_state.respuesta_palabraDia = []
+    st.session_state.respuesta_expliTribu = []
+    st.session_state.respuesta_adivinaPalabra = []
         
 def list_models():
     '''
@@ -35,9 +46,9 @@ def list_models():
 
 lista = list_models()
 
-
 # * --------------------------------------------------------
 st.set_page_config(page_title="LEXIWAK-BOT", page_icon="🌎")
+init_chats(st.session_state)
 
 if "message" not in st.session_state:
     st.session_state.message = [{
@@ -47,6 +58,15 @@ if "message" not in st.session_state:
     
 if "language" not in st.session_state:
     st.session_state.language = "Español"
+
+if "respuesta_palabraDia" not in st.session_state:
+    st.session_state.respuesta_palabraDia = []
+
+if "respuesta_expliTribu" not in st.session_state:
+    st.session_state.respuesta_expliTribu = []
+
+if "respuesta_adivinaPalabra" not in st.session_state:
+    st.session_state.respuesta_adivinaPalabra = []
     
 for message in st.session_state.message:
     role = message.get("role", "")
@@ -100,6 +120,7 @@ with st.sidebar:
             value=256,
             step=1
         )
+        st.info("Docs: selecciona el archivo al lado izquierdo en el navegador lateral.\n\n Imgs: selecciona el logo de clip **(En proceso de prueba)**", icon=":material/help:", width="stretch")
 
     st.divider()
 
@@ -135,43 +156,40 @@ with st.sidebar:
     
     st.subheader("Historial chats 💬")
 
+# * Configuración del user_input y respuesta del modelo
+modeloLLM = st.session_state.model
+
+llm = ChatOllama(
+    model=modeloLLM,
+)
 
 user_input = st.chat_input(
 'Escribe que deseas saber del documento', 
 accept_file=True,
 file_type=["jpg", "jpeg", "png"],)
 
-
-if user_input is None:
-    st.info("Si deseas traducir un documento, selecciona el archivo al lado izquierdo en el navegador lateral.\n\n Si deseas subir archivos tipo imágenes, selecciona el logo de clip en la parte inferior izquierda de la entrada de texto **(En proceso de prueba)**", icon=":material/help:", width="stretch")
-    
+# * Configuración de los botones de rápido acceso
+if user_input is None:    
     cols = st.columns(3)
+    
     if cols[0].button("📘 Dime la palabra del día en Arawak", use_container_width = True):
-        st.session_state.palabraDia = 'Dame una palabra random en Arawak con su significado y uso en una oración.'
+        palabraDia(st, create_prompt, llm, stream_text)
+    
     if cols[1].button("🌎 Explicame acerca de la tribu Arawak", use_container_width = True):
-        st.session_state.expliTribu = 'Dame información sobre la tribu Arawak y su cultura.'
+        expliTribu(st, llm, stream_text)
+    
     if cols[2].button("❓¿Adivina la siguiente palabra del Arawak?", use_container_width = True):
-        st.session_state.adivinaPalabra = 'Es una sección de adivinanza, dame una palabra en Arawak y su significado, dame varias opciones para adivinar.'
-        st.write(st.session_state.adivinaPalabra)
+        adivinaPalabra(st, llm, stream_text)
 
-modeloLLM = st.session_state.model
-
-llm = ChatOllama(
-    model = modeloLLM,
-    temperature = st.session_state.temperature,
-    top_p = st.session_state.top_p,
-    top_k = st.session_state.top_k,
-    num_predict = st.session_state.max_tokens
-)
-
-# ! Por acá voy
-if user_input:
+# * Configuración del texto de entrada para usuario
+if user_input and user_input.text:
     # Mostrar pregunta en un contenedor principal
     with st.container():
-        with st.chat_message("user"):
-            st.write(user_input)
-        st.divider()
+        with st.chat_message("user", avatar=":material/emoji_people:"):
+            st.write(user_input.text)
 
+        st.session_state.message.append({"role": "user", "content": user_input.text})
+        
         try:
             # Configurar modelo específico
             llm = ChatOllama(
@@ -182,10 +200,10 @@ if user_input:
                 num_predict=st.session_state.max_tokens
             )
 
-            prompt = create_prompt(user_input, st.session_state.language)
+            prompt = create_prompt(user_input.text, st.session_state.language)
             messages = [
                 ("system", prompt),
-                ("human", user_input)
+                ("human", user_input.text)
             ]
 
             # Generar y mostrar respuesta
@@ -206,13 +224,10 @@ if user_input:
                 # Guardar en historial
                 st.session_state.message.append({
                     "modelo": modeloLLM,
-                    "pregunta": user_input,
+                    "pregunta": user_input.text,
                     "respuesta": response.content,
                     "metadata": response.response_metadata
                 })
-            
-            with st.expander("Ver respuesta Cruda"):
-                st.write(response)
                 
         except Exception as e:
             st.error(f"Error en {modeloLLM}: {str(e)}")
