@@ -6,29 +6,32 @@ import streamlit as st
 import uuid
 
 # Crear prompt
-# prompt = PromptTemplate.from_template("""
-# Historial de conversación:
-# {chat_history}
-
-# Usuario: {input}
-# Asistente:
-# """)
-
-def init_chats(session_state):
+def init_chats(st):
     """
     
     """
-    if "chats" not in session_state:
-        session_state.chats = {}
+    prompt = PromptTemplate.from_template(
+    """
+        Historial de conversación:
+        {chat_history}
 
-    if "chat_actual" not in session_state:
+        Usuario: {input}
+        Asistente:
+    """)
+
+    if "chats" not in st.session_state:
+        st.session_state.chats = {}
+
+    if "chat_actual" not in st.session_state:
         chat_id = str(uuid.uuid4())[:8]
-        session_state.chats[chat_id] = {
+        st.session_state.chats[chat_id] = {
             "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
             "historial": [],
-            "nombre": "Chat"
+            "nombre": f"Chat #{len(st.session_state.chats) + 1}"
         }
-        session_state.chat_actual = chat_id
+        st.session_state.chat_actual = chat_id
+    
+    st.write("📌 Chat activo:", st.session_state.chats[st.session_state.chat_actual]["nombre"])
     
 # Sidebar: seleccionar o crear chats
 # with st.sidebar:

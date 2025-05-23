@@ -1,3 +1,5 @@
+import time
+
 def palabraDia(st, create_prompt, llm, stream_text):
     """
     Función que actúa para que el modelo responda al presionar "palabra del día"
@@ -12,17 +14,17 @@ def palabraDia(st, create_prompt, llm, stream_text):
 
     response = llm.invoke(messages)
 
-    st.write_stream(stream_text(response.content))
-
-    st.session_state.respuesta_palabraDia.append(response.content)
-
-    st.session_state.message.append({"role": "assistant", "content": response.content})
+    with st.chat_message("assistant", avatar=":material/network_intelligence:"):
+        st.write_stream(stream_text(response.content))
+        st.session_state.respuesta_palabraDia.append(response.content)
+        
+        st.session_state.message.append({"role": "assistant", "content": response.content})
 
 def expliTribu(st, llm, stream_text):
     """
     Función que actúa como segundo botón, para conocer historia de la tribu
     """
-    st.session_state.expliTribu = "'Dame información sobre la tribu Arawak y su cultura.'"
+    st.session_state.expliTribu = "Dame información sobre la tribu Arawak y su cultura."
     prompt = f"""Eres un experto antropólogo e historiador especializado en culturas indígenas de América. 
     Proporcióname una explicación clara, detallada y bien organizada sobre la tribu Arawak y su cultura. 
     Incluye información sobre su historia, ubicación geográfica, tradiciones, idioma, organización social, costumbres 
@@ -35,20 +37,32 @@ def expliTribu(st, llm, stream_text):
 
     messages = [("system", prompt), ("human", st.session_state.expliTribu)]
 
-    response = llm.invoke(messages)
+    with st.status(f"*Modelo pensando...*", expanded=True) as status:
+        response = llm.invoke(messages)
+        st.write("*🗒️ Buscando en NatGeographic...*")
+        time.sleep(1)
+        st.write("*:globe_with_meridians: Buscando en Google...*")
+        time.sleep(1)
+        st.write("*:chart_with_upwards_trend: Invirtiendo en Nvidia...*")
+        time.sleep(1)
+        st.write("*🧠 Generando respuesta sólida...*")
+        time.sleep(1)
+        status.update(label = "🤖 Búsqueda finalizada", expanded=False)
 
-    st.write_stream(stream_text(response.content))
-    st.session_state.respuesta_expliTribu.append(response.content)
+    if response: 
+        with st.chat_message("assistant", avatar=":material/network_intelligence:"):
+            st.write_stream(stream_text(response.content))
+            st.session_state.respuesta_expliTribu.append(response.content)
 
-    st.session_state.message.append({"role": "assistant", "content": response.content})
+            st.session_state.message.append({"role": "assistant", "content": response.content})
 
 def adivinaPalabra(st, llm, stream_text):
     """
     Función que actúa como tercer botón para interactividad con el usuario y aprendizaje
     """
     st.session_state.adivinaPalabra = 'Dame un juego de opciones en donde tenga que Adivinar la palabra del Arawak.'
-    prompt = f"""Usa la información disponible en la base de datos vectorial (De momento usa tus conocimientos) para ayudar a responder la siguiente consulta:
-    Genera una palabra en Arawak con su significado y uso en una oración. Luego, proporciona varias opciones en el idioma seleccionado por el usuario {st.session_state.language} para que el usuario adivine cuál es la palabra correcta. Usa solo información que esté respaldada por los datos.
+    prompt = f"""Partiendo del idioma del usuario {st.session_state.language}. Usa la información disponible en la base de datos vectorial (De momento usa tus conocimientos) y brinda toda tu respuesta en el idioma seleccionado por el usuario para ayudar a responder la siguiente consulta:
+    Genera una palabra en Arawak con su significado y uso en una oración. Luego, proporciona varias opciones para que el usuario adivine cuál es la palabra correcta. Usa solo información que esté respaldada por los datos.
     """
     
     st.session_state.message.append({"role": "user", "content": st.session_state.adivinaPalabra})
@@ -57,10 +71,11 @@ def adivinaPalabra(st, llm, stream_text):
 
     response = llm.invoke(messages)
 
-    st.write_stream(stream_text(response.content))
-    st.session_state.respuesta_adivinaPalabra.append(response.content)
+    with st.chat_message("assistant", avatar=":material/network_intelligence:"):
+        st.write_stream(stream_text(response.content))
+        st.session_state.respuesta_adivinaPalabra.append(response.content)
 
-    st.session_state.message.append({"role": "assistant", "content": response.content})
+        st.session_state.message.append({"role": "assistant", "content": response.content})
 
 
 

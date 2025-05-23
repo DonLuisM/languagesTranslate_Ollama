@@ -48,7 +48,6 @@ lista = list_models()
 
 # * --------------------------------------------------------
 st.set_page_config(page_title="LEXIWAK-BOT", page_icon="🌎")
-init_chats(st.session_state)
 
 if "message" not in st.session_state:
     st.session_state.message = [{
@@ -85,6 +84,7 @@ with st.sidebar:
 
     left, right = st.columns(2)
     if left.button('Nuevo chat', icon="🗒️", use_container_width=True, on_click=clc_chat_history):
+        init_chats(st)
         st.toast("✅ Nuevo chat iniciado.")
 
     with right.popover("Config.", icon="⚙️"):
@@ -172,13 +172,13 @@ file_type=["jpg", "jpeg", "png"],)
 if user_input is None:    
     cols = st.columns(3)
     
-    if cols[0].button("📘 Dime la palabra del día en Arawak", use_container_width = True):
+    if cols[0].button("📘 Conoce la palabra del día en Arawak", use_container_width = True):
         palabraDia(st, create_prompt, llm, stream_text)
     
     if cols[1].button("🌎 Explicame acerca de la tribu Arawak", use_container_width = True):
         expliTribu(st, llm, stream_text)
     
-    if cols[2].button("❓¿Adivina la siguiente palabra del Arawak?", use_container_width = True):
+    if cols[2].button("❓Adivina la siguiente palabra del Arawak", use_container_width = True):
         adivinaPalabra(st, llm, stream_text)
 
 # * Configuración del texto de entrada para usuario
@@ -205,30 +205,50 @@ if user_input and user_input.text:
                 ("system", prompt),
                 ("human", user_input.text)
             ]
-
-            # Generar y mostrar respuesta
-            with st.spinner(f"*Pensando con {modeloLLM}...*"):
+            
+            # * Mensajes de carga
+            with st.status(f"*Modelo {modeloLLM} pensando...*", expanded=True) as status:
                 response = llm.invoke(messages)
+                st.write("*🗒️ Procesando información...*")
+                time.sleep(1)
+                st.write("*:bar_chart: Buscando en la Base de Datos...*")
+                time.sleep(1)
+                st.write("*🍕 Pidiendo pizza...*")
+                time.sleep(1)
+                st.write("*📲 Llamando a Siri...*")
+                time.sleep(1)
+                st.write("*:chart_with_upwards_trend: Buscando relaciones...*")
+                time.sleep(1)
+                st.write("*🧠 Generando respuesta sólida...*")
+                time.sleep(1)
+                status.update(label = "🤖 Respuesta generada", expanded=False)
 
-                st.write("**Respuesta:**")
-                st.write(response.content)
-                
-                # Metadata de la respuesta
-                st.caption(f"""
-                **Detalles Técnicos:**
-                - Tokens usados: {response.response_metadata['eval_count']}
-                - Tiempo respuesta: {response.response_metadata['total_duration'] / 1e9:.2f}s
-                - Modelo preciso: {response.response_metadata['model']}
-                """)
-                
-                # Guardar en historial
-                st.session_state.message.append({
-                    "modelo": modeloLLM,
-                    "pregunta": user_input.text,
-                    "respuesta": response.content,
-                    "metadata": response.response_metadata
-                })
-                
+            if response:
+                with st.chat_message("assistant", avatar=":material/translate:"):
+                    st.write_stream(stream_text(response.content))
+            
+                    # Metadata de la respuesta
+                    st.caption(f"""
+                    **Detalles Técnicos:**
+                    - Tokens usados: {response.response_metadata['eval_count']}
+                    - Tiempo respuesta: {response.response_metadata['total_duration'] / 1e9:.2f}s
+                    - Modelo preciso: {response.response_metadata['model']}
+                    """)
+                    
+                    # * Guardar en historial
+                    st.session_state.message.append({
+                        "role": "assistant", 
+                        "content": response.content
+                    })
+
+                    # # Guardar en historial
+                    # st.session_state.message.append({
+                    #     "modelo": modeloLLM,
+                    #     "pregunta": user_input.text,
+                    #     "respuesta": response.content,
+                    #     "metadata": response.response_metadata
+                    # })
+
         except Exception as e:
             st.error(f"Error en {modeloLLM}: {str(e)}")
 
