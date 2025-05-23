@@ -1,6 +1,6 @@
 # :earth_americas: _LEXIWAK-BOT_
 
-Este repositorio está estructurado para mantener un seguimiento claro del progreso del proyecto, comparando la versión 1 con la versión 2. La versión 1 representa el punto de partida, mientras que la versión 2 incorpora mejoras avanzadas con técnicas como el uso de VectorDB, RAG,persistencia en Memoria, embeddings y una interfaz más robusta e interactiva. Con esto, se logra destacar el compromiso en el desarrollo de un chatbot más avanzado y estructurado para preservar la lengua indígena Arawak.
+Este repositorio está estructurado para mantener un seguimiento claro del progreso del proyecto, comparando la versión 1 con la versión 2. La versión 1 representa el punto de partida, mientras que la versión 2 incorpora mejoras avanzadas con técnicas como el uso de VectorDB, RAG, persistencia en Memoria, embeddings y una interfaz más robusta e interactiva. Con esto, se logra destacar el compromiso en el desarrollo de un chatbot más avanzado y estructurado para preservar la lengua indígena Arawak.
 
 Continua la finalidad de traducir entre idiomas modernos (Español, Inglés, Alemán, Francés, Italiano) y adicionalmente, conocer sobre la lengua indígena Arawak.
 
