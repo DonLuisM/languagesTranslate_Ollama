@@ -1,92 +1,51 @@
-from langchain_ollama import ChatOllama
+"""
+Desarrollo de la persistencia de memoria para el asistente LEXIWAK
+"""
+
+import uuid
+import streamlit as st
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
-from langchain.chains import LLMChain
-import streamlit as st
-import uuid
 
-# Crear prompt
-def init_chats(st):
-    """
-    
-    """
-    prompt = PromptTemplate.from_template(
-    """
-        Historial de conversación:
-        {chat_history}
+promptHistorial = PromptTemplate.from_template("""
+Historial de conversación:
+{chat_history}
 
-        Usuario: {input}
-        Asistente:
-    """)
+Usuario: {input}
+Asistente:
+""")
 
-    if "chats" not in st.session_state:
+def init_chats():
+    '''
+    Función para inicializar el estado de la conversación y memoria del bot
+    '''
+    if 'chats' not in st.session_state:
         st.session_state.chats = {}
 
-    if "chat_actual" not in st.session_state:
+    if (
+        'chat_actual' not in st.session_state or 
+        st.session_state.chat_actual not in st.session_state.chats
+    ):
         chat_id = str(uuid.uuid4())[:8]
+        bienvenida = {
+            "role": "assistant",
+            "content": """
+            Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. 
+            \n\n ¿Deseas aprender una palabra en Arawak?
+            """
+        }
         st.session_state.chats[chat_id] = {
-            "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
-            "historial": [],
+            "memory": ConversationBufferMemory(
+                memory_key="chat_history", input_key="input", return_messages=True
+            ),
+            "historial": [bienvenida],
             "nombre": f"Chat #{len(st.session_state.chats) + 1}"
         }
         st.session_state.chat_actual = chat_id
-    
-    st.write("📌 Chat activo:", st.session_state.chats[st.session_state.chat_actual]["nombre"])
-    
-# Sidebar: seleccionar o crear chats
-# with st.sidebar:
-#     st.title("💬 Chats")
-#     # Lista de chats
-#     for cid, chat in st.session_state.chats.items():
-#         if st.button(chat["nombre"], key=cid):
-#             st.session_state.chat_actual = cid
+        st.session_state.message = [bienvenida]
 
-#     if st.button("Nuevo Chat Ji"):
-#         new_id = str(uuid.uuid4())[:8]
-#         st.session_state.chats[new_id] = {
-#             "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
-#             "historial": [],
-#             "nombre": f"Chat {len(st.session_state.chats)+1}"
-#         }
-#         st.session_state.chat_actual = new_id
-
-#     st.write("---")
-#     st.write("📌 Chat activo:", st.session_state.chats[st.session_state.chat_actual]["nombre"])
-
-# # Configuración modelo
-# llm = ChatOllama(
-#     model="qwen3:latest",
-#     temperature=0.4,
-#     num_predict=256,
-# )
-
-# # Obtener memoria e historial del chat actual
-# chat = st.session_state.chats[st.session_state.chat_actual]
-# memory = chat["memory"]
-# historial = chat["historial"]
-
-# # Mostrar historial en pantalla
-# st.title(chat["nombre"])
-# for mensaje in historial:
-#     with st.chat_message(mensaje["role"]):
-#         st.write(mensaje["content"])
-
-# # Input del usuario
-# user_input = st.chat_input("Escribe algo...")
-
-# if user_input:
-#     historial.append({"role": "user", "content": user_input})
-#     with st.chat_message("user"):
-#         st.write(user_input)
-
-#     chain = LLMChain(llm=llm, prompt=prompt, memory=memory)
-#     with st.spinner("Pensando..."):
-#         try:
-#             result = chain.invoke({"input": user_input})
-#             respuesta = result["text"]
-#             historial.append({"role": "assistant", "content": respuesta})
-
-#             with st.chat_message("assistant"):
-#                 st.write(respuesta)
-#         except Exception as e:
-#             st.error(f"❌ Error: {e}")
+def get_chat_actual():
+    '''
+    Función para obtener el chat actual del usuario
+    '''
+    return st.session_state.chats[st.session_state.chat_actual]
