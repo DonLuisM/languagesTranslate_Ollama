@@ -12,3 +12,6 @@ wheels/
 .python-version
 
 st/__pycache__
+
+# ChromaDB
+chroma_langchain_db

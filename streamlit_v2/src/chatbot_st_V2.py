@@ -8,13 +8,14 @@ from langchain_ollama import ChatOllama
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import LLMChain
+from rag import get_vectorial_default_db, rag_user_input
+from prompt_st import create_prompt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-from streamlit_V1.prompt_st import create_prompt
 from persistencia_memoria import init_chats
 from botones_acceso import palabraDia, expliTribu, adivinaPalabra
 
-# * ------------ Funciones -----------
+    # * ------------ Funciones -----------
 def stream_text(text):
     '''
     Función para hacer lograr el correcto funcionamiento del st.write_stream 
@@ -41,13 +42,16 @@ def list_models():
     Función para enlistar los modelos de ollama locales
     '''
     models_running = ollama.list()['models']
-    available_models = [model["model"] for model in models_running]
+    available_models = [model["model"] for model in models_running if model["model"] != 'nomic-embed-text:latest']
     return available_models
 
 lista = list_models()
 
 # * --------------------------------------------------------
 st.set_page_config(page_title="LEXIWAK-BOT", page_icon="🌎")
+
+if "vector_db" not in st.session_state:
+    st.session_state.vector_db = get_vectorial_default_db()
 
 if "message" not in st.session_state:
     st.session_state.message = [{
@@ -200,7 +204,12 @@ if user_input and user_input.text:
                 num_predict=st.session_state.max_tokens
             )
 
-            prompt = create_prompt(user_input.text, st.session_state.language)
+            with st.spinner("*Buscando respuestas...*"):
+                doc, score = rag_user_input(st.session_state.vector_db, user_input.text)
+
+            print('DOC: ', doc)
+            print('SCORE: ', score)
+            prompt = create_prompt(doc, user_input.text, st.session_state.language)
             messages = [
                 ("system", prompt),
                 ("human", user_input.text)
