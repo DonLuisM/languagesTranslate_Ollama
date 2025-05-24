@@ -11,7 +11,7 @@ from langchain.chains import LLMChain
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from streamlit_V1.prompt_st import create_prompt
-from persistencia_memoria import init_chats
+from persistencia_memoria import init_chats, get_chat_actual, promptHistorial
 from botones_acceso import palabraDia, expliTribu, adivinaPalabra
 
 # * ------------ Funciones -----------
@@ -57,6 +57,9 @@ if "message" not in st.session_state:
     
 if "language" not in st.session_state:
     st.session_state.language = "Español"
+    
+if "chats" not in st.session_state:
+    st.session_state.chats = {}
 
 if "respuesta_palabraDia" not in st.session_state:
     st.session_state.respuesta_palabraDia = []
@@ -84,7 +87,13 @@ with st.sidebar:
 
     left, right = st.columns(2)
     if left.button('Nuevo chat', icon="🗒️", use_container_width=True, on_click=clc_chat_history):
-        init_chats(st)
+        new_id = str(uuid.uuid4())[:8]
+        st.session_state.chat_actual = new_id
+        st.session_state.chats[new_id] = {
+            "memory": ConversationBufferMemory(return_messages=True),
+            "historial": []
+        }
+        st.session_state.nuevo_chat_id = new_id 
         st.toast("✅ Nuevo chat iniciado.")
 
     with right.popover("Config.", icon="⚙️"):
@@ -154,109 +163,165 @@ with st.sidebar:
 
     st.divider()
     
-    st.subheader("Historial chats 💬")
+    if "nuevo_chat_id" in st.session_state:
+        st.info(f"Nuevo chat creado: {st.session_state.nuevo_chat_id}")
+
+    for chat_id in st.session_state.chats:
+        if st.button(f"🗂️ Chat {chat_id}", key=chat_id):
+            st.session_state.chat_actual = chat_id
+            st.session_state.message = st.session_state.chats[chat_id]["historial"].copy()
+            st.toast(f"📂 Cargado chat {chat_id}")
 
 # * Configuración del user_input y respuesta del modelo
 modeloLLM = st.session_state.model
 
-llm = ChatOllama(
-    model=modeloLLM,
-)
+llm = ChatOllama(model=modeloLLM)
 
 user_input = st.chat_input(
-'Escribe que deseas saber del documento', 
-accept_file=True,
-file_type=["jpg", "jpeg", "png"],)
+    'Escribe que deseas saber del documento',
+    accept_file=True,
+    file_type=["jpg", "jpeg", "png"],
+)
 
 # * Configuración de los botones de rápido acceso
-if user_input is None:    
+if user_input is None:
     cols = st.columns(3)
-    
-    if cols[0].button("📘 Conoce la palabra del día en Arawak", use_container_width = True):
+
+    if cols[0].button("📘 Conoce la palabra del día en Arawak", use_container_width=True):
         palabraDia(st, create_prompt, llm, stream_text)
     
-    if cols[1].button("🌎 Explicame acerca de la tribu Arawak", use_container_width = True):
+    if cols[1].button("🌎 Explicame acerca de la tribu Arawak", use_container_width=True):
         expliTribu(st, llm, stream_text)
     
-    if cols[2].button("❓Adivina la siguiente palabra del Arawak", use_container_width = True):
+    if cols[2].button("❓Adivina la siguiente palabra del Arawak", use_container_width=True):
         adivinaPalabra(st, llm, stream_text)
 
 # * Configuración del texto de entrada para usuario
+# * Procesar entrada del usuario con memoria
+# if user_input and user_input.text:
+#     manejar_chat_con_memoria(llm, user_input.text)
+
+# Inicializar los chats si no existen
+init_chats()
+
+# Obtener el chat actual (memoria e historial)
+chat = get_chat_actual()
+memory = chat["memory"]
+historial = chat["historial"]
+
 if user_input and user_input.text:
-    # Mostrar pregunta en un contenedor principal
-    with st.container():
-        with st.chat_message("user", avatar=":material/emoji_people:"):
-            st.write(user_input.text)
-
-        st.session_state.message.append({"role": "user", "content": user_input.text})
+    with st.chat_message("user", avatar=":material/emoji_people:"):
+        st.write(user_input.text)
         
-        try:
-            # Configurar modelo específico
-            llm = ChatOllama(
-                model=modeloLLM,
-                temperature=st.session_state.temperature,
-                top_p=st.session_state.top_p,
-                top_k=st.session_state.top_k,
-                num_predict=st.session_state.max_tokens
-            )
+    historial.append({"role": "user", "content": user_input.text})
+    st.session_state.message.append({"role": "user", "content": user_input.text})
 
-            prompt = create_prompt(user_input.text, st.session_state.language)
-            messages = [
-                ("system", prompt),
-                ("human", user_input.text)
-            ]
-            
-            # * Mensajes de carga
-            with st.status(f"*Modelo {modeloLLM} pensando...*", expanded=True) as status:
-                response = llm.invoke(messages)
-                st.write("*🗒️ Procesando información...*")
-                time.sleep(1)
-                st.write("*:bar_chart: Buscando en la Base de Datos...*")
-                time.sleep(1)
-                st.write("*🍕 Pidiendo pizza...*")
-                time.sleep(1)
-                st.write("*📲 Llamando a Siri...*")
-                time.sleep(1)
-                st.write("*:chart_with_upwards_trend: Buscando relaciones...*")
-                time.sleep(1)
-                st.write("*🧠 Generando respuesta sólida...*")
-                time.sleep(1)
-                status.update(label = "🤖 Respuesta generada", expanded=False)
+    try:
+        # Configurar modelo con parámetros actuales
+        llm = ChatOllama(
+            model=st.session_state.model,
+            temperature=st.session_state.temperature,
+            top_p=st.session_state.top_p,
+            top_k=st.session_state.top_k,
+            num_predict=st.session_state.max_tokens
+        )
 
-            if response:
-                with st.chat_message("assistant", avatar=":material/translate:"):
-                    st.write_stream(stream_text(response.content))
+        # Usar prompt con memoria de conversación
+        chain = LLMChain(llm=llm, prompt=promptHistorial, memory=memory)
+
+        with st.status(f"*Modelo {st.session_state.model} pensando...*", expanded=True) as status:
+            response = chain.invoke({"input": user_input.text})["text"]
             
-                    # Metadata de la respuesta
-                    st.caption(f"""
-                    **Detalles Técnicos:**
-                    - Tokens usados: {response.response_metadata['eval_count']}
-                    - Tiempo respuesta: {response.response_metadata['total_duration'] / 1e9:.2f}s
-                    - Modelo preciso: {response.response_metadata['model']}
-                    """)
+            st.write("*🗒️ Procesando información...*")
+            time.sleep(1)
+            st.write("*:bar_chart: Buscando en la Base de Datos...*")
+            time.sleep(1)
+            st.write("*🍕 Pidiendo pizza...*")
+            time.sleep(1)
+            st.write("*📲 Llamando a Siri...*")
+            time.sleep(1)
+            st.write("*:chart_with_upwards_trend: Buscando relaciones...*")
+            time.sleep(1)
+            st.write("*🧠 Generando respuesta sólida...*")
+            time.sleep(1)
+            status.update(label="🤖 Respuesta generada", expanded=False)
+
+        if response:
+            with st.chat_message("assistant", avatar=":material/translate:"):
+                st.write_stream(stream_text(response))
+                
+            historial.append({"role": "assistant", "content": response})
+            st.session_state.message.append({"role": "assistant", "content": response})
+            
+    except Exception as e:
+        st.error(f"Error en {st.session_state.model}: {str(e)}")
+
+# if user_input and user_input.text:
+#     # Mostrar pregunta en un contenedor principal
+#     with st.container():
+#         with st.chat_message("user", avatar=":material/emoji_people:"):
+#             st.write(user_input.text)
+
+#         st.session_state.message.append({"role": "user", "content": user_input.text})
+        
+#         try:
+#             # Configurar modelo específico
+#             llm = ChatOllama(
+#                 model=modeloLLM,
+#                 temperature=st.session_state.temperature,
+#                 top_p=st.session_state.top_p,
+#                 top_k=st.session_state.top_k,
+#                 num_predict=st.session_state.max_tokens
+#             )
+
+#             prompt = create_prompt(user_input.text, st.session_state.language)
+#             messages = [
+#                 ("system", prompt),
+#                 ("human", user_input.text)
+#             ]
+            
+#             # * Mensajes de carga
+#             with st.status(f"*Modelo {modeloLLM} pensando...*", expanded=True) as status:
+#                 response = llm.invoke(messages)
+#                 st.write("*🗒️ Procesando información...*")
+#                 time.sleep(1)
+#                 st.write("*:bar_chart: Buscando en la Base de Datos...*")
+#                 time.sleep(1)
+#                 st.write("*🍕 Pidiendo pizza...*")
+#                 time.sleep(1)
+#                 st.write("*📲 Llamando a Siri...*")
+#                 time.sleep(1)
+#                 st.write("*:chart_with_upwards_trend: Buscando relaciones...*")
+#                 time.sleep(1)
+#                 st.write("*🧠 Generando respuesta sólida...*")
+#                 time.sleep(1)
+#                 status.update(label = "🤖 Respuesta generada", expanded=False)
+
+#             if response:
+#                 with st.chat_message("assistant", avatar=":material/translate:"):
+#                     st.write_stream(stream_text(response.content))
+            
+#                     # Metadata de la respuesta
+#                     st.caption(f"""
+#                     **Detalles Técnicos:**
+#                     - Tokens usados: {response.response_metadata['eval_count']}
+#                     - Tiempo respuesta: {response.response_metadata['total_duration'] / 1e9:.2f}s
+#                     - Modelo preciso: {response.response_metadata['model']}
+#                     """)
                     
-                    # * Guardar en historial
-                    st.session_state.message.append({
-                        "role": "assistant", 
-                        "content": response.content
-                    })
+#                     # * Guardar en historial
+#                     st.session_state.message.append({
+#                         "role": "assistant", 
+#                         "content": response.content
+#                     })
 
-                    # # Guardar en historial
-                    # st.session_state.message.append({
-                    #     "modelo": modeloLLM,
-                    #     "pregunta": user_input.text,
-                    #     "respuesta": response.content,
-                    #     "metadata": response.response_metadata
-                    # })
+#                     # # Guardar en historial
+#                     # st.session_state.message.append({
+#                     #     "modelo": modeloLLM,
+#                     #     "pregunta": user_input.text,
+#                     #     "respuesta": response.content,
+#                     #     "metadata": response.response_metadata
+#                     # })
 
-        except Exception as e:
-            st.error(f"Error en {modeloLLM}: {str(e)}")
-
-# Sección de historial (opcional)
-# with st.expander("Ver historial completo"):
-#     for entry in st.session_state.historial:
-#         st.write(f"**Modelo:** {entry['modelo']}")
-#         st.write(f"**Pregunta:** {entry['pregunta']}")
-#         st.write(f"**Respuesta:** {entry['respuesta']}")
-#         st.divider()
- 
+#         except Exception as e:
+#             st.error(f"Error en {modeloLLM}: {str(e)}")
