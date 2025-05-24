@@ -30,7 +30,7 @@ def palabraDia(st, create_prompt, llm, stream_text):
 
     response = mostrar_status(llm, messages, stream_text)
 
-    with st.chat_message("assistant", avatar=":material/network_intelligence:"):
+    with st.chat_message("assistant", avatar=":material/translate:"):
         st.write_stream(stream_text(response.content))
         st.session_state.respuesta_palabraDia.append(response.content)
         
@@ -56,7 +56,7 @@ def expliTribu(st, llm, stream_text):
     response = mostrar_status(llm, messages, stream_text)
 
     if response: 
-        with st.chat_message("assistant", avatar=":material/network_intelligence:"):
+        with st.chat_message("assistant", avatar=":material/translate:"):
             st.write_stream(stream_text(response.content))
             st.session_state.respuesta_expliTribu.append(response.content)
 
@@ -81,7 +81,7 @@ def adivinaPalabra(st, llm, stream_text):
     
     response = mostrar_status(llm, messages, stream_text)
 
-    with st.chat_message("assistant", avatar=":material/network_intelligence:"):
+    with st.chat_message("assistant", avatar=":material/translate:"):
         st.write_stream(stream_text(response.content))
         st.session_state.respuesta_adivinaPalabra.append(response.content)
 
