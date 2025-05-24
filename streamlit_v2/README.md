@@ -50,6 +50,10 @@ Esta evolución refleja el compromiso en python y streamlit con la creación de 
 |------------------|
 | ![Vista Chat Avanzado](./data/Interfaz_memoria.jpg) |
 
+| Función de la aplicación |
+|------------------|
+| ![App operativa](./data/Interfaz_rag.jpg) |
+
 
 ## :hammer_and_wrench: Configuración
 
