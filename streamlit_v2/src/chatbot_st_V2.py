@@ -22,20 +22,37 @@ def stream_text(text):
     for word in text:
         yield word
         time.sleep(0.022)
-        
+  
 def clc_chat_history():
     '''
     Función para limpiar el historial a partir del botón
     '''
     st.session_state.message = [{
         "role": "assistant",
-        "content": "Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. \n\n ¿Deseas aprender una palabra en Arawak?"
+        "content": """
+        Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. 
+        \n\n ¿Deseas aprender una palabra en Arawak?"""
     }]
     st.session_state.language = "Español"
     st.session_state.respuesta_palabraDia = []
     st.session_state.respuesta_expliTribu = []
     st.session_state.respuesta_adivinaPalabra = []
-        
+     
+def clc_history():
+    '''
+    Función para limpiar el historial o carpetas de chats
+    '''
+    st.session_state.message = [{
+        "role": "assistant",
+        "content": "Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. \n\n ¿Deseas aprender una palabra en Arawak?"
+    }]
+    st.session_state.chats = {}
+    st.session_state.chat_actual = None
+    st.toast("Historial limpiado. Crea un nuevo chat para continuar.")
+    st.session_state.respuesta_palabraDia = []
+    st.session_state.respuesta_expliTribu = []
+    st.session_state.respuesta_adivinaPalabra = []
+    
 def list_models():
     '''
     Función para enlistar los modelos de ollama locales
@@ -46,15 +63,35 @@ def list_models():
 
 lista = list_models()
 
+def roles():
+    '''
+    Función para definir los roles del usuario y asistente
+    '''
+    for message in st.session_state.message:
+        role = message.get("role", "")
+        content = message.get("content", "")
+
+        if role == "user":
+            with st.chat_message("user", avatar=":material/emoji_people:"):
+                st.write(content)
+        elif role == "assistant":
+            with st.chat_message("assistant", avatar=":material/translate:"):
+                st.write(content)
+
 # * --------------------------------------------------------
 st.set_page_config(page_title="LEXIWAK-BOT", page_icon="🌎")
+
+init_chats()
 
 if "message" not in st.session_state:
     st.session_state.message = [{
         "role": "assistant", 
-        "content": "Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. \n\n ¿Deseas aprender una palabra en Arawak?"
+        "content": """
+        Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. 
+        \n\n ¿Deseas aprender una palabra en Arawak?
+        """
     }]
-    
+
 if "language" not in st.session_state:
     st.session_state.language = "Español"
     
@@ -69,31 +106,30 @@ if "respuesta_expliTribu" not in st.session_state:
 
 if "respuesta_adivinaPalabra" not in st.session_state:
     st.session_state.respuesta_adivinaPalabra = []
-    
-for message in st.session_state.message:
-    role = message.get("role", "")
-    content = message.get("content", "")
-
-    if role == "user":
-        with st.chat_message("user", avatar=":material/emoji_people:"):
-            st.write(content)
-    elif role == "assistant":
-        with st.chat_message("assistant", avatar=":material/translate:"):
-            st.write(content)
 
 # * Configuración barra lateral (Configuración parámetros)
+roles()
+
 with st.sidebar:
     st.title('🤖 Configuración LEXIWAK')
 
     left, right = st.columns(2)
     if left.button('Nuevo chat', icon="🗒️", use_container_width=True, on_click=clc_chat_history):
         new_id = str(uuid.uuid4())[:8]
+        bienvenida = {
+            "role": "assistant",
+            "content": """
+            Bienvenido humano, soy LEXIWAK tu asistente de traducción con conocimientos en la lengua indígena Arawak. 
+            \n\n ¿Deseas aprender una palabra en Arawak?
+            """
+        }
         st.session_state.chat_actual = new_id
         st.session_state.chats[new_id] = {
-            "memory": ConversationBufferMemory(return_messages=True),
-            "historial": []
+            "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
+            "historial": [bienvenida],
         }
-        st.session_state.nuevo_chat_id = new_id 
+        st.session_state.message = [bienvenida]
+        st.session_state.nuevo_chat_id = new_id
         st.toast("✅ Nuevo chat iniciado.")
 
     with right.popover("Config.", icon="⚙️"):
@@ -133,7 +169,6 @@ with st.sidebar:
 
     st.divider()
 
-
     st.session_state.language = st.selectbox(
         "A qué idioma deseas traducir?", 
         ("Español", "Inglés", "Alemán", "Francés", "Italiano", "Arawak")
@@ -162,15 +197,16 @@ with st.sidebar:
                 st.success("Cargado con éxito")
 
     st.divider()
-    
-    if "nuevo_chat_id" in st.session_state:
+
+    if not st.button("Limpiar historial", icon="🖌️", on_click=clc_history):
         st.info(f"Nuevo chat creado: {st.session_state.nuevo_chat_id}")
 
     for chat_id in st.session_state.chats:
-        if st.button(f"🗂️ Chat {chat_id}", key=chat_id):
+        if st.button(f"🗂️ Chat {chat_id}",  use_container_width=True, key=chat_id):
             st.session_state.chat_actual = chat_id
             st.session_state.message = st.session_state.chats[chat_id]["historial"].copy()
             st.toast(f"📂 Cargado chat {chat_id}")
+
 
 # * Configuración del user_input y respuesta del modelo
 modeloLLM = st.session_state.model
@@ -198,11 +234,6 @@ if user_input is None:
 
 # * Configuración del texto de entrada para usuario
 # * Procesar entrada del usuario con memoria
-# if user_input and user_input.text:
-#     manejar_chat_con_memoria(llm, user_input.text)
-
-# Inicializar los chats si no existen
-init_chats()
 
 # Obtener el chat actual (memoria e historial)
 chat = get_chat_actual()
@@ -212,12 +243,12 @@ historial = chat["historial"]
 if user_input and user_input.text:
     with st.chat_message("user", avatar=":material/emoji_people:"):
         st.write(user_input.text)
-        
+  
     historial.append({"role": "user", "content": user_input.text})
     st.session_state.message.append({"role": "user", "content": user_input.text})
 
     try:
-        # Configurar modelo con parámetros actuales
+        # * Configurar modelo con parámetros actuales
         llm = ChatOllama(
             model=st.session_state.model,
             temperature=st.session_state.temperature,
@@ -226,9 +257,10 @@ if user_input and user_input.text:
             num_predict=st.session_state.max_tokens
         )
 
-        # Usar prompt con memoria de conversación
+        # * Usar prompt con memoria de conversación
         chain = LLMChain(llm=llm, prompt=promptHistorial, memory=memory)
 
+        # * Mensajes de carga
         with st.status(f"*Modelo {st.session_state.model} pensando...*", expanded=True) as status:
             response = chain.invoke({"input": user_input.text})["text"]
             
@@ -255,73 +287,3 @@ if user_input and user_input.text:
             
     except Exception as e:
         st.error(f"Error en {st.session_state.model}: {str(e)}")
-
-# if user_input and user_input.text:
-#     # Mostrar pregunta en un contenedor principal
-#     with st.container():
-#         with st.chat_message("user", avatar=":material/emoji_people:"):
-#             st.write(user_input.text)
-
-#         st.session_state.message.append({"role": "user", "content": user_input.text})
-        
-#         try:
-#             # Configurar modelo específico
-#             llm = ChatOllama(
-#                 model=modeloLLM,
-#                 temperature=st.session_state.temperature,
-#                 top_p=st.session_state.top_p,
-#                 top_k=st.session_state.top_k,
-#                 num_predict=st.session_state.max_tokens
-#             )
-
-#             prompt = create_prompt(user_input.text, st.session_state.language)
-#             messages = [
-#                 ("system", prompt),
-#                 ("human", user_input.text)
-#             ]
-            
-#             # * Mensajes de carga
-#             with st.status(f"*Modelo {modeloLLM} pensando...*", expanded=True) as status:
-#                 response = llm.invoke(messages)
-#                 st.write("*🗒️ Procesando información...*")
-#                 time.sleep(1)
-#                 st.write("*:bar_chart: Buscando en la Base de Datos...*")
-#                 time.sleep(1)
-#                 st.write("*🍕 Pidiendo pizza...*")
-#                 time.sleep(1)
-#                 st.write("*📲 Llamando a Siri...*")
-#                 time.sleep(1)
-#                 st.write("*:chart_with_upwards_trend: Buscando relaciones...*")
-#                 time.sleep(1)
-#                 st.write("*🧠 Generando respuesta sólida...*")
-#                 time.sleep(1)
-#                 status.update(label = "🤖 Respuesta generada", expanded=False)
-
-#             if response:
-#                 with st.chat_message("assistant", avatar=":material/translate:"):
-#                     st.write_stream(stream_text(response.content))
-            
-#                     # Metadata de la respuesta
-#                     st.caption(f"""
-#                     **Detalles Técnicos:**
-#                     - Tokens usados: {response.response_metadata['eval_count']}
-#                     - Tiempo respuesta: {response.response_metadata['total_duration'] / 1e9:.2f}s
-#                     - Modelo preciso: {response.response_metadata['model']}
-#                     """)
-                    
-#                     # * Guardar en historial
-#                     st.session_state.message.append({
-#                         "role": "assistant", 
-#                         "content": response.content
-#                     })
-
-#                     # # Guardar en historial
-#                     # st.session_state.message.append({
-#                     #     "modelo": modeloLLM,
-#                     #     "pregunta": user_input.text,
-#                     #     "respuesta": response.content,
-#                     #     "metadata": response.response_metadata
-#                     # })
-
-#         except Exception as e:
-#             st.error(f"Error en {modeloLLM}: {str(e)}")

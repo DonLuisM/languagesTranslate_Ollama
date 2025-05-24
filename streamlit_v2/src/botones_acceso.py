@@ -1,4 +1,20 @@
 import time
+import streamlit as st
+
+def mostrar_status(llm, messages, stream_text):
+    with st.status(f"*Modelo pensando...*", expanded=True) as status:
+        response = llm.invoke(messages)
+        st.write("*🗒️ Buscando en NatGeographic...*")
+        time.sleep(1)
+        st.write("*:globe_with_meridians: Buscando en Google...*")
+        time.sleep(1)
+        st.write("*:chart_with_upwards_trend: Invirtiendo en Nvidia...*")
+        time.sleep(1)
+        st.write("*🧠 Generando respuesta sólida...*")
+        time.sleep(1)
+        status.update(label = "🤖 Búsqueda finalizada", expanded=False)
+    return response
+
 
 def palabraDia(st, create_prompt, llm, stream_text):
     """
@@ -12,7 +28,7 @@ def palabraDia(st, create_prompt, llm, stream_text):
 
     messages = [("system", prompt), ("human", st.session_state.palabraDia)]
 
-    response = llm.invoke(messages)
+    response = mostrar_status(llm, messages, stream_text)
 
     with st.chat_message("assistant", avatar=":material/network_intelligence:"):
         st.write_stream(stream_text(response.content))
@@ -37,17 +53,7 @@ def expliTribu(st, llm, stream_text):
 
     messages = [("system", prompt), ("human", st.session_state.expliTribu)]
 
-    with st.status(f"*Modelo pensando...*", expanded=True) as status:
-        response = llm.invoke(messages)
-        st.write("*🗒️ Buscando en NatGeographic...*")
-        time.sleep(1)
-        st.write("*:globe_with_meridians: Buscando en Google...*")
-        time.sleep(1)
-        st.write("*:chart_with_upwards_trend: Invirtiendo en Nvidia...*")
-        time.sleep(1)
-        st.write("*🧠 Generando respuesta sólida...*")
-        time.sleep(1)
-        status.update(label = "🤖 Búsqueda finalizada", expanded=False)
+    response = mostrar_status(llm, messages, stream_text)
 
     if response: 
         with st.chat_message("assistant", avatar=":material/network_intelligence:"):
@@ -61,24 +67,22 @@ def adivinaPalabra(st, llm, stream_text):
     Función que actúa como tercer botón para interactividad con el usuario y aprendizaje
     """
     st.session_state.adivinaPalabra = 'Dame un juego de opciones en donde tenga que Adivinar la palabra del Arawak.'
-    prompt = f"""Partiendo del idioma del usuario {st.session_state.language}. Usa la información disponible en la base de datos vectorial (De momento usa tus conocimientos) y brinda toda tu respuesta en el idioma seleccionado por el usuario para ayudar a responder la siguiente consulta:
-    Genera una palabra en Arawak con su significado y uso en una oración. Luego, proporciona varias opciones para que el usuario adivine cuál es la palabra correcta. Usa solo información que esté respaldada por los datos.
+    prompt = f"""Partiendo del idioma del usuario {st.session_state.language}. 
+    Usa la información disponible en la base de datos vectorial (De momento usa tus conocimientos) y brinda toda tu respuesta 
+    en el idioma seleccionado por el usuario para ayudar a responder la siguiente consulta:
+    Genera una palabra en Arawak con su significado y uso en una oración. 
+    Luego, proporciona varias opciones para que el usuario adivine cuál es la palabra correcta. 
+    Usa solo información que esté respaldada por los datos.
     """
     
     st.session_state.message.append({"role": "user", "content": st.session_state.adivinaPalabra})
 
     messages = [("system", prompt), ("human", st.session_state.adivinaPalabra)]
-
-    response = llm.invoke(messages)
+    
+    response = mostrar_status(llm, messages, stream_text)
 
     with st.chat_message("assistant", avatar=":material/network_intelligence:"):
         st.write_stream(stream_text(response.content))
         st.session_state.respuesta_adivinaPalabra.append(response.content)
 
         st.session_state.message.append({"role": "assistant", "content": response.content})
-
-
-
-
-""
-
