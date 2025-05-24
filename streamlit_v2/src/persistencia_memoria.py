@@ -1,9 +1,11 @@
-from langchain_ollama import ChatOllama
-from langchain.prompts import PromptTemplate
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import LLMChain
+"""
+Desarrollo de la persistencia de memoria para el asistente LEXIWAK
+"""
+
 import uuid
 import streamlit as st
+from langchain.prompts import PromptTemplate
+from langchain.memory import ConversationBufferMemory
 
 promptHistorial = PromptTemplate.from_template("""
 Historial de conversación:
@@ -20,7 +22,10 @@ def init_chats():
     if 'chats' not in st.session_state:
         st.session_state.chats = {}
 
-    if 'chat_actual' not in st.session_state or st.session_state.chat_actual not in st.session_state.chats:
+    if (
+        'chat_actual' not in st.session_state or 
+        st.session_state.chat_actual not in st.session_state.chats
+    ):
         chat_id = str(uuid.uuid4())[:8]
         bienvenida = {
             "role": "assistant",
@@ -30,7 +35,9 @@ def init_chats():
             """
         }
         st.session_state.chats[chat_id] = {
-            "memory": ConversationBufferMemory(memory_key="chat_history", input_key="input", return_messages=True),
+            "memory": ConversationBufferMemory(
+                memory_key="chat_history", input_key="input", return_messages=True
+            ),
             "historial": [bienvenida],
             "nombre": f"Chat #{len(st.session_state.chats) + 1}"
         }

@@ -12,7 +12,7 @@ from langchain.chains import LLMChain
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from streamlit_V1.prompt_st import create_prompt
 from persistencia_memoria import init_chats, get_chat_actual, promptHistorial
-from botones_acceso import palabraDia, expliTribu, adivinaPalabra
+from botones_acceso import palabra_dia, explicar_tribu, adivinar_palabra
 
 # * ------------ Funciones -----------
 def stream_text(text):
@@ -224,13 +224,13 @@ if user_input is None:
     cols = st.columns(3)
 
     if cols[0].button("📘 Conoce la palabra del día en Arawak", use_container_width=True):
-        palabraDia(st, create_prompt, llm, stream_text)
+        palabra_dia(st, create_prompt, llm, stream_text)
     
     if cols[1].button("🌎 Explicame acerca de la tribu Arawak", use_container_width=True):
-        expliTribu(st, llm, stream_text)
+        explicar_tribu(st, llm, stream_text)
     
     if cols[2].button("❓Adivina la siguiente palabra del Arawak", use_container_width=True):
-        adivinaPalabra(st, llm, stream_text)
+        adivinar_palabra(st, llm, stream_text)
 
 # * Configuración del texto de entrada para usuario
 # * Procesar entrada del usuario con memoria
