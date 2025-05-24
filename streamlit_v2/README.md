@@ -24,6 +24,17 @@ Esta evolución refleja el compromiso en python y streamlit con la creación de 
 - Streamlit
 - LangChain
 
+### :framed_picture: Visualización de la aplicación
+
+| Vista Web | Vista Móvil |
+|-----------|-------------|
+| ![webapp](./data/Interfaz_1.jpg) | ![mobile](./static/assets/appMobile.jpg) |
+
+| Vista Streamlit |
+|------------------|
+| ![st](./static/assets/appStreamlit.jpg) |
+
+
 ## :hammer_and_wrench: Configuración
 
 ### 1. Descargar Ollama y uv
