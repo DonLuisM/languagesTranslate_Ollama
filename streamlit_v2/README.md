@@ -9,6 +9,16 @@ Se presentan dos versiones principales:
 
 Esta evolución refleja el compromiso en python y streamlit con la creación de un chatbot más estructurado, eficiente y culturalmente relevante.
 
+### Tabla de Contenidos
+- [Características](#dart-características)
+- [Tecnologías usadas](#rocket-tecnologías-usadas)
+- [Visualización de la aplicación](#framed_picture-visualización-de-la-aplicación)
+- [Configuración](#hammer_and_wrench-configuración)
+- [Licencia](#scroll-licencia)
+- [Contribuciones](#handshake-contribuciones)
+- [Apoyo](#heart-apoyo)
+- [Autores](#busts_in_silhouette-autores)
+
 ### :dart: Características
 - Traducción entre Arawak y otros idiomas modernos.
 - Uso de LLMs para generación de texto con enfoque cultural.
@@ -16,6 +26,7 @@ Esta evolución refleja el compromiso en python y streamlit con la creación de 
 - Uso de streamlit como interfaz avanzada con caracteristicas esenciales para brindar servicios de chatbot de alta calidad.
 - Uso de memoria conversacional para contexto continuo.
 - Preservación y revitalización lingüística.
+- Uso de código limpio y de calidad con apoyo de herramientas como Pylint.
   
 ### :rocket: Tecnologías usadas
 - Python
@@ -26,13 +37,17 @@ Esta evolución refleja el compromiso en python y streamlit con la creación de 
 
 ### :framed_picture: Visualización de la aplicación
 
-| Vista Web | Vista Móvil |
-|-----------|-------------|
-| ![webapp](./data/Interfaz_1.jpg) | ![mobile](./static/assets/appMobile.jpg) |
+| Vista de la interfaz | 
+|-----------|
+| ![Interfaz Completa](./data/Interfaz_box.jpg) |
 
-| Vista Streamlit |
+| Vista Modelo cargando (status) |
 |------------------|
-| ![st](./static/assets/appStreamlit.jpg) |
+| ![status Modelo](./data/Interfaz_waiting.jpg) |
+
+| Validación de memoria y almacenamiento de chats |
+|------------------|
+| ![Vista Chat Avanzado](./data/Interfaz_memoria.jpg) |
 
 
 ## :hammer_and_wrench: Configuración
@@ -69,3 +84,16 @@ uv run streamlit run .\streamlit_V2\src\chatbot_st_V2.py
 
 ### :scroll: Licencia
 Licencia MIT – consulta el archivo [LICENSE](../LICENSE) para más detalles.
+
+### :handshake: Contribuciones
+Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repositorio y enviar un pull request. ¡Todas las contribuciones son bienvenidas!
+
+### :heart: Apoyo
+Agradecemos tu apoyo, dandole una estrella al repositorio si es de tu agrado. Queremos llevar este proyecto a gran escala con entidades de preservación lingüística como museos, historiadores, entre otros. (⌒▽⌒)👍
+
+### :busts_in_silhouette: Autores:
+- [@ingrid183](https://github.com/ingrid183)
+- [@Juandiego001](https://github.com/Juandiego001)
+- [@seba39399](https://github.com/seba39399)
+- [@DonLuisM](https://github.com/DonLuisM)
+
