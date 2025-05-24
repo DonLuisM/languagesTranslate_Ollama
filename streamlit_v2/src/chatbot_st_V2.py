@@ -204,6 +204,9 @@ with st.sidebar:
     st.divider()
 
     if not st.button("Limpiar historial", icon="🖌️", on_click=clc_history):
+        if not 'nuevo_chat_id' in st.session_state:
+            st.session_state.nuevo_chat_id = str(uuid.uuid4())[:8]
+
         st.info(f"Nuevo chat creado: {st.session_state.nuevo_chat_id}")
 
     for chat_id in st.session_state.chats:
