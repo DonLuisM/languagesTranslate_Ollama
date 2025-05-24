@@ -9,7 +9,7 @@ Se presentan dos versiones principales:
 
 Esta evolución refleja el compromiso en python y streamlit con la creación de un chatbot más estructurado, eficiente y culturalmente relevante.
 
-### Tabla de Contenidos
+### :information_source: Tabla de Contenidos
 - [Características](#dart-características)
 - [Tecnologías usadas](#rocket-tecnologías-usadas)
 - [Visualización de la aplicación](#framed_picture-visualización-de-la-aplicación)
@@ -17,6 +17,7 @@ Esta evolución refleja el compromiso en python y streamlit con la creación de 
 - [Licencia](#scroll-licencia)
 - [Contribuciones](#handshake-contribuciones)
 - [Apoyo](#heart-apoyo)
+- [Recursos](#books-recursos-lingüísticos-sobre-el-arawak)
 - [Autores](#busts_in_silhouette-autores)
 
 ### :dart: Características
@@ -91,6 +92,10 @@ Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repos
 ### :heart: Apoyo
 Agradecemos tu apoyo, dandole una estrella al repositorio si es de tu agrado. Queremos llevar este proyecto a gran escala con entidades de preservación lingüística como museos, historiadores, entre otros. (⌒▽⌒)👍
 
+### :books: Recursos lingüísticos sobre el Arawak
+- [A Grammar Sketch and Lexicon of Arawak (Lokono Dian)]([https://www.ethnologue.com/subgroups/arawak](https://www.sil.org/system/files/reapdata/90/56/45/90564558109971050115741497077250122669/e_Books_30_Pet_Arawak_Suriname.pdf))
+- [An Arawak English Dictionary with an English World List](https://tiboko.com/wp-content/uploads/2023/07/Arawak-English-Dictionary.pdf)
+  
 ### :busts_in_silhouette: Autores:
 - [@ingrid183](https://github.com/ingrid183)
 - [@Juandiego001](https://github.com/Juandiego001)
