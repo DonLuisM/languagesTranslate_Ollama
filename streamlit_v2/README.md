@@ -1,17 +1,20 @@
 # :earth_americas: _LEXIWAK-BOT_
 
-Este repositorio está estructurado para mantener un seguimiento claro del progreso del proyecto, comparando la versión 1 con la versión 2. La versión 1 representa el punto de partida, mientras que la versión 2 incorpora mejoras avanzadas con técnicas como el uso de VectorDB, RAG, persistencia en Memoria, embeddings y una interfaz más robusta e interactiva. Con esto, se logra destacar el compromiso en el desarrollo de un chatbot más avanzado y estructurado para preservar la lengua indígena Arawak.
+Este repositorio documenta el seguimiento en el desarrollo progresivo de LEXIWAK-BOT, un chatbot multilingüe diseñado para la preservación y revitalización de la lengua indígena Arawak, integrando traducción entre idiomas modernos (Español, Inglés, Alemán, Francés, Italiano) y el idioma ancestral Arawak.
 
-Continua la finalidad de traducir entre idiomas modernos (Español, Inglés, Alemán, Francés, Italiano) y adicionalmente, conocer sobre la lengua indígena Arawak.
+Se presentan dos versiones principales:
 
-Integrando con apoyo de las herramientas de LangChain usando modelos instalados en el sistema operativo del usuario (recomendado tener Ollama instalado, recomendado ser modelos razonadores, para una respuesta fluida y conversacion amigable). Su base principal abarca python, herramientas de streamlit para su visualización y herramientas de LancgChain para un enfoque más estructurado.
+- Versión 1: Punto de partida con funcionalidades básicas.
+- Versión 2: Mejoras avanzadas que incluyen el uso de VectorDB, Recuperación Augmentada por Memoria (RAG), persistencia de memoria conversacional, embeddings semánticos y una interfaz de usuario más robusta e interactiva. Logrando destacar el compromiso en el desarrollo de un chatbot más avanzado y estructurado para preservar la lengua indígena Arawak.
 
+Esta evolución refleja el compromiso en python y streamlit con la creación de un chatbot más estructurado, eficiente y culturalmente relevante.
 
 ### :dart: Características
 - Traducción entre Arawak y otros idiomas modernos.
 - Uso de LLMs para generación de texto con enfoque cultural.
 - Diseño modular para fácil manejo de las herramientas.
 - Uso de streamlit como interfaz avanzada con caracteristicas esenciales para brindar servicios de chatbot de alta calidad.
+- Uso de memoria conversacional para contexto continuo.
 - Preservación y revitalización lingüística.
   
 ### :rocket: Tecnologías usadas
@@ -20,3 +23,38 @@ Integrando con apoyo de las herramientas de LangChain usando modelos instalados 
 - Ollama
 - Streamlit
 - LangChain
+
+## :hammer_and_wrench: Configuración
+
+### 1. Descargar Ollama y uv
+- Ollama - [Download](https://ollama.com/)
+- uv - [Terminal](https://docs.astral.sh/uv/#__tabbed_1_1)
+> [!IMPORTANT]
+> Para correr satisfactoriamente la aplicación y configuración debes contar con UV Python y Ollama (LLMs Open Source).
+
+### 2. Instalar modelo de Ollama:
+```bash
+# Validar Ollama descargado
+ollama
+
+# Descargar modelos qwen
+ollama run qwen3:latest
+```
+
+### 3. Clona el repositorio e instalar dependencias
+```bash
+git clone https://github.com/DonLuisM/languagesTranslate_Ollama.git
+cd languagesTranslate_Ollama
+
+uv add
+uv sync
+```
+
+### 4. Ejecutar la aplicación
+```bash
+uv run streamlit run .\streamlit_V2\src\chatbot_st_V2.py
+```
+---
+
+### :scroll: Licencia
+Licencia MIT – consulta el archivo [LICENSE](../LICENSE) para más detalles.
