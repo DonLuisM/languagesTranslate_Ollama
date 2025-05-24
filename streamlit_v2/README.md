@@ -97,7 +97,7 @@ Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repos
 Agradecemos tu apoyo, dandole una estrella al repositorio si es de tu agrado. Queremos llevar este proyecto a gran escala con entidades de preservación lingüística como museos, historiadores, entre otros. (⌒▽⌒)👍
 
 ### :books: Recursos lingüísticos sobre el Arawak
-- [A Grammar Sketch and Lexicon of Arawak (Lokono Dian)]([https://www.ethnologue.com/subgroups/arawak](https://www.sil.org/system/files/reapdata/90/56/45/90564558109971050115741497077250122669/e_Books_30_Pet_Arawak_Suriname.pdf))
+- [A Grammar Sketch and Lexicon of Arawak (Lokono Dian)](https://www.sil.org/system/files/reapdata/90/56/45/90564558109971050115741497077250122669/e_Books_30_Pet_Arawak_Suriname.pdf)
 - [An Arawak English Dictionary with an English World List](https://tiboko.com/wp-content/uploads/2023/07/Arawak-English-Dictionary.pdf)
   
 ### :busts_in_silhouette: Autores:
